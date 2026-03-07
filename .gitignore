@@ -1,0 +1,6 @@
+drafts/
+.DS_Store
+.claude/
+skills-library/*
+!skills-library/.gitkeep
+!skills-library/README.md
