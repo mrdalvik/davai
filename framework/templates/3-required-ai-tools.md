@@ -5,11 +5,11 @@ What the user needs to prepare before development starts:
 - API keys, tokens, accounts
 - ...
 
-## Library Skills (copy from skills-library/)
+## Library Skills (copy from library/skills/)
 
 | Skill | Directory | Why |
 |-------|-----------|-----|
-| ... | `skills-library/<name>/` | ... |
+| ... | `library/skills/<name>/` | ... |
 
 ## Custom Skills (create new)
 
@@ -25,11 +25,11 @@ description: "When and why to use this skill"
 Skill instructions here...
 ```
 
-## MCP Servers
+## MCP Servers (from library/mcp/ or external)
 
-| MCP Server | Purpose | Verified? |
-|------------|---------|-----------|
-| ... | ... | yes/no — check before installing |
+| MCP Server | Source | Purpose | Verified? |
+|------------|--------|---------|-----------|
+| ... | `library/mcp/<name>/` or external | ... | yes/no — check before installing |
 
 ## CLI Tools
 

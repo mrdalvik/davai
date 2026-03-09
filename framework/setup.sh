@@ -14,7 +14,7 @@ BOLD='\033[1m'
 NC='\033[0m'
 
 echo ""
-echo -e "${BOLD}  davai${NC} — from idea to project"
+echo -e "${BOLD}  Davai${NC} — from idea to project"
 echo -e "  ──────────────────────────────"
 echo ""
 
@@ -34,7 +34,7 @@ if [ -f "$INSTALLED_DIR/config.yml" ]; then
 fi
 
 # Choose tool
-echo -e "  Which AI tool will you use with davai?"
+echo -e "  Which AI tool will you use with Davai?"
 echo ""
 echo -e "    ${BOLD}1)${NC} Claude Code"
 echo -e "    ${BOLD}2)${NC} Cursor"
@@ -57,12 +57,12 @@ case "$CHOICE" in
 esac
 
 echo ""
-echo -e "  Setting up davai for ${CYAN}${AI_TOOL_NAME}${NC}..."
+echo -e "  Setting up Davai for ${CYAN}${AI_TOOL_NAME}${NC}..."
 
 # --- Build installed/ from framework/ ---
 
 # Validate framework files exist
-for dir in agents templates skills-library; do
+for dir in agents templates library; do
     if [ ! -d "$FRAMEWORK_DIR/$dir" ]; then
         echo -e "\n  ${RED}Missing framework/$dir — framework files are incomplete.${NC}\n"
         exit 1
@@ -78,13 +78,13 @@ mkdir -p "$INSTALLED_DIR"
 # Remove only generated parts (preserve user data: learnings.md, drafts/, projects/)
 rm -rf "$INSTALLED_DIR/agents" \
        "$INSTALLED_DIR/templates" \
-       "$INSTALLED_DIR/skills-library" \
+       "$INSTALLED_DIR/library" \
        "$INSTALLED_DIR/config.yml"
 
 # Copy framework files
 cp -R "$FRAMEWORK_DIR/agents" "$INSTALLED_DIR/agents"
 cp -R "$FRAMEWORK_DIR/templates" "$INSTALLED_DIR/templates"
-cp -R "$FRAMEWORK_DIR/skills-library" "$INSTALLED_DIR/skills-library"
+cp -R "$FRAMEWORK_DIR/library" "$INSTALLED_DIR/library"
 cp "$FRAMEWORK_DIR/config.yml" "$INSTALLED_DIR/config.yml"
 
 # Create user data files if they don't exist
@@ -111,7 +111,7 @@ tmp=$(mktemp)
 sed "s/^tool: .*/tool: ${TOOL}/" "$INSTALLED_DIR/config.yml" > "$tmp" && mv "$tmp" "$INSTALLED_DIR/config.yml"
 
 # Replace {{ai_tool}} in all generated .md and .yml files (skip user data)
-for dir in agents templates skills-library; do
+for dir in agents templates library; do
     find "$INSTALLED_DIR/$dir" -type f \( -name '*.md' -o -name '*.yml' \) -exec \
         sed -i.bak "s/{{ai_tool}}/${AI_TOOL_NAME}/g" {} +
 done
@@ -143,7 +143,7 @@ case "$TOOL" in
 
         cat > "$ROOT_DIR/.cursor/rules/davai-ceo.mdc" <<MDCEOF
 ---
-description: davai CEO — orchestrator that guides from idea to project
+description: Davai CEO — orchestrator that guides from idea to project
 alwaysApply: true
 ---
 
@@ -173,7 +173,7 @@ done
 echo -e "  ${GREEN}+${NC} Updated .gitignore"
 
 echo ""
-echo -e "  ${GREEN}Done!${NC} davai is ready for ${CYAN}${AI_TOOL_NAME}${NC}."
+echo -e "  ${GREEN}Done!${NC} Davai is ready for ${CYAN}${AI_TOOL_NAME}${NC}."
 echo ""
 
 case "$TOOL" in

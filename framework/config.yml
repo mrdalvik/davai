@@ -1,4 +1,4 @@
-# davai framework configuration
+# Davai framework configuration
 # This is the template. The installed copy is in installed/config.yml.
 
 # Active tool (set by setup.sh)
@@ -7,7 +7,7 @@ tool: null
 # Tool profiles
 profiles:
   claude-code:
-    # Where CEO instructions are placed in the davai repo
+    # Where CEO instructions are placed in the Davai repo
     ceo_instructions_file: CLAUDE.md
     # Tool-specific config directory
     tool_config_dir: .claude

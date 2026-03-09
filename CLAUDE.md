@@ -1,4 +1,4 @@
-# davai — first launch
+# Davai — first launch
 
 This is a bootstrap file. The framework is not yet configured.
 
@@ -6,7 +6,7 @@ This is a bootstrap file. The framework is not yet configured.
 
 1. Greet the user (detect language from their message, use both if unknown):
 
-"Hi! I'm davai. Before we start, let's set up the framework."
+"Hi! I'm Davai. Before we start, let's set up the framework."
 
 2. Ask which AI tool they're using:
 

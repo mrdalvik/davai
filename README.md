@@ -1,10 +1,10 @@
-# davai
+# Davai
 
 The first AI framework that turns a raw idea into a fully structured, development-ready project — before a single line of code is written.
 
 Works with **Claude Code** and **Cursor**.
 
-You describe an idea. davai walks you through product specification, tech stack selection, tooling, and architecture — then creates a project folder with everything an AI developer needs to start building.
+You describe an idea. Davai walks you through product specification, tech stack selection, tooling, and architecture — then creates a project folder with everything an AI developer needs to start building.
 
 ## How it works
 
@@ -39,7 +39,7 @@ Open the project in your AI tool:
 - **Claude Code:** run `claude` in the davai directory
 - **Cursor:** open the davai folder in Cursor
 
-On first launch, davai greets you, asks which tool you're using, runs setup, and asks you to restart the session. After that — the CEO agent takes over and guides you through the full pipeline.
+On first launch, Davai greets you, asks which tool you're using, runs setup, and asks you to restart the session. After that — the CEO agent takes over and guides you through the full pipeline.
 
 ### Switching tools
 
@@ -67,7 +67,7 @@ my-project/
 - **Multi-tool support** — works with Claude Code and Cursor
 - **Phase validation** — readiness checklists, cross-checks between phases
 - **Resume & rollback** — continue where you left off or redo any phase
-- **Learning** — each project teaches davai, past insights inform future recommendations
+- **Learning** — each project teaches Davai, past insights inform future recommendations
 
 ## Requirements
 

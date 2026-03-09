@@ -11,7 +11,9 @@ drafts/
 projects/
 learnings.md
 
-# Skills library contents (managed separately)
-framework/skills-library/*
-!framework/skills-library/.gitkeep
-!framework/skills-library/README.md
+# Library contents (managed separately)
+framework/library/skills/*
+!framework/library/skills/.gitkeep
+framework/library/mcp/*
+!framework/library/mcp/.gitkeep
+!framework/library/README.md

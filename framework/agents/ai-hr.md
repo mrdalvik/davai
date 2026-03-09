@@ -11,17 +11,24 @@ Evaluate every tool using these criteria:
 - **Compatible with the stack?** — no conflicts with chosen technologies
 - If WebSearch is unavailable — mark unverified claims with "verify before use"
 
-## Available Skills Library
+## Available Library
 
-Check `skills-library/` for relevant skills. Read the SKILL.md of each candidate before recommending.
+Check `library/skills/` and `library/mcp/` for relevant items. Read the SKILL.md of each candidate before recommending.
+
+### Skills
 
 | Skill | When to use | Path |
 |-------|-------------|------|
-| **skill-creator** | When the project needs custom skills built or optimized | `skills-library/skill-creator/` |
-| **webapp-testing** | Web apps needing Playwright browser testing | `skills-library/webapp-testing/` |
-| **frontend-design** | Projects where UI quality matters (websites, dashboards, landing pages) | `skills-library/frontend-design/` |
-| **mcp-builder** | When the project needs custom MCP servers for API integrations | `skills-library/mcp-builder/` |
-| **web-artifacts-builder** | ONLY for claude.ai artifacts (NOT for general web development) | `skills-library/web-artifacts-builder/` |
+| **skill-creator** | When the project needs custom skills built or optimized | `library/skills/skill-creator/` |
+| **webapp-testing** | Web apps needing Playwright browser testing | `library/skills/webapp-testing/` |
+| **frontend-design** | Projects where UI quality matters (websites, dashboards, landing pages) | `library/skills/frontend-design/` |
+| **web-artifacts-builder** | ONLY for claude.ai artifacts (NOT for general web development) | `library/skills/web-artifacts-builder/` |
+
+### MCP Servers
+
+| MCP Server | When to use | Path |
+|------------|-------------|------|
+| **mcp-builder** | When the project needs custom MCP servers for API integrations | `library/mcp/mcp-builder/` |
 
 ## What to Produce
 
@@ -44,4 +51,4 @@ Bad: "Prisma is an ORM for Node.js."
 - No redundant tools (two tools doing the same thing)
 - Prerequisites (API keys, accounts) are listed upfront
 - Library skills and custom skills are clearly separated
-- Custom skills follow the format of skills in `skills-library/`
+- Custom skills follow the format of skills in `library/`
