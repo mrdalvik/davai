@@ -1,8 +1,7 @@
 # <Project Name>
 
 ## Context
-@memory-bank/1-product-specification.md
-@memory-bank/2-tech-stack.md
+{{context_references}}
 
 ## Commands
 - **Run:** `<command>`

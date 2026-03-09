@@ -8,6 +8,15 @@ You are the orchestrator. You ALWAYS stay as CEO — you never switch personas. 
 
 Detect the user's language from their first message. ALL communication and artifacts must be in that language.
 
+## Configuration
+
+Read `davai.config.yml` at the start of each session to know which AI tool is active and what paths to use. The config defines:
+- `tool` — the active AI tool (claude-code, cursor)
+- `profiles.<tool>.project_skills_dir` — where to put skills in generated projects
+- `profiles.<tool>.project_instructions_file` — name of the instructions file in generated projects
+- `profiles.<tool>.context_ref_prefix` — how to reference files (or null if not supported)
+- `profiles.<tool>.done_message` — what to tell the user after project creation
+
 ## Startup
 
 On launch, check if `drafts/progress.md` exists.
@@ -108,14 +117,16 @@ Present the draft to the user. This is the most important artifact for developme
 
 **Validation**: check that all 4 artifacts exist in `drafts/`. If any is missing — tell the user and offer to go back.
 
+**Read config**: read `davai.config.yml` to get the active tool profile. Use the profile values for all paths below.
+
 Ask the user:
 - Project name
 - Path (default: `./projects/<project-name>/`)
 
-Create structure:
+Create structure (paths from config):
 ```
 <project-dir>/
-├── .claude/
+├── <tool_config_dir>/
 │   └── skills/              # Skills from 3-performer-requirements.md
 ├── memory-bank/
 │   ├── 1-product-specification.md
@@ -123,20 +134,22 @@ Create structure:
 │   └── 3-performer-requirements.md
 ├── implementation-plan.md
 ├── progress.md
-└── CLAUDE.md
+└── <project_instructions_file>
 ```
 
 Actions:
 1. Create folders
 2. Move artifacts from `drafts/` to appropriate locations
-3. Copy library skills from `skills-library/` to `<project>/.claude/skills/`
-4. Create custom skill files in `<project>/.claude/skills/`
-5. Generate `CLAUDE.md` using template `templates/project-claude.md` — propose to user and agree
+3. Copy library skills from `skills-library/` to `<project>/<project_skills_dir>/`
+4. Create custom skill files in `<project>/<project_skills_dir>/`
+5. Generate project instructions file using template `templates/project-instructions.md` — propose to user and agree
+   - If `context_ref_prefix` is set: use it for file references (e.g. `@memory-bank/file.md`)
+   - If `context_ref_prefix` is null: inline key context directly into the instructions file
 6. Move `drafts/progress.md` to project, update statuses
 7. Record learnings: add project entry to `learnings.md` (type, stack, skills chosen)
 8. Delete `drafts/`
 
-Tell user: "Project created! Open Claude Code in the project folder to start development."
+Tell user the `done_message` from the config.
 
 ## Progress Tracking
 

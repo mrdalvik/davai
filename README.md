@@ -1,6 +1,8 @@
 # davai
 
-An AI-powered framework for Claude Code that takes your IT project from idea to a development-ready setup.
+An AI-powered framework that takes your IT project from idea to a development-ready setup.
+
+Works with **Claude Code** and **Cursor**.
 
 You describe an idea. davai walks you through product specification, tech stack selection, tooling, and architecture — then creates a project folder with everything an AI developer needs to start building.
 
@@ -22,28 +24,49 @@ You: "I want to build a Telegram bot that tracks expenses"
    Subagent designs architecture → ordered task list → you review and confirm
         ↓
    Phase 5: Project Created!
-   → my-bot/.claude/skills/    (AI developer skills)
-   → my-bot/memory-bank/       (spec, stack, requirements)
-   → my-bot/implementation-plan.md
-   → my-bot/CLAUDE.md          (project instructions)
 ```
 
-Open Claude Code in the project folder and start development. The AI developer has everything it needs.
+Open the project folder in your AI tool and start development. The AI developer has everything it needs.
 
 ## Quick start
 
 ```bash
+git clone <repo-url> davai
 cd davai
-claude
+bash setup.sh
 ```
 
-That's it. The CEO agent greets you and guides the entire process.
+The setup script asks which AI tool you use and configures davai for it:
+
+```
+  davai — from idea to project
+  ──────────────────────────────
+
+  Which AI tool will you use with davai?
+
+    1) Claude Code
+    2) Cursor
+
+  Your choice (1/2):
+```
+
+Then start your tool:
+- **Claude Code:** `claude` in the davai directory
+- **Cursor:** open the davai folder in Cursor
+
+The CEO agent greets you and guides the entire process.
+
+### Switching tools
+
+Run `bash setup.sh` again to reconfigure. Your drafts and projects are preserved — only the instruction files are regenerated.
 
 ## Architecture
 
 davai never writes code. It orchestrates the **planning phase** of your project.
 
-**CEO** (`CLAUDE.md`) — the orchestrator. Always stays in this role. Talks to you, launches subagents, presents drafts, iterates until you're happy.
+**CEO** (`core/ceo-instructions.md`) — the orchestrator. Always stays in this role. Talks to you, launches subagents, presents drafts, iterates until you're happy. The setup script generates tool-specific instruction files from this source.
+
+**Config** (`davai.config.yml`) — defines paths and formats for each AI tool. CEO reads this at runtime to know where to put skills, how to name instruction files, etc.
 
 **Playbooks** (`agents/`) — instructions for subagents. Each playbook defines how to think and what to produce:
 - `product-designer.md` — MoSCoW prioritization, MVP scoping, spec quality criteria
@@ -56,7 +79,7 @@ davai never writes code. It orchestrates the **planning phase** of your project.
 - `2-tech-stack.md` — components, AI-friendliness, workflow commands, alternatives
 - `3-performer-requirements.md` — library skills, custom skills, MCP servers, CLI tools
 - `implementation-plan.md` — ordered tasks with files and done-criteria
-- `project-claude.md` — template for the project's CLAUDE.md
+- `project-instructions.md` — template for the project's instruction file
 
 **Skills library** (`skills-library/`) — pre-built skills that can be copied into projects. **Not included in the repo** — you populate it yourself with skills relevant to your work. See [`skills-library/README.md`](skills-library/README.md) for setup instructions.
 
@@ -64,11 +87,11 @@ davai never writes code. It orchestrates the **planning phase** of your project.
 
 ## What you get
 
-After running davai, your project folder contains:
+After running davai, your project folder contains (paths depend on your AI tool):
 
 ```
 my-project/
-├── .claude/
+├── <tool-config>/
 │   └── skills/                  # Tailored for your stack
 │       ├── library-skill/       # Copied from davai skills-library
 │       └── custom-skill/        # Created specifically for your project
@@ -78,13 +101,12 @@ my-project/
 │   └── 3-performer-requirements.md
 ├── implementation-plan.md       # Ordered tasks, ready to execute
 ├── progress.md
-└── CLAUDE.md                    # Project instructions for AI developer
+└── <instructions-file>          # CLAUDE.md or .cursorrules
 ```
-
-Open Claude Code in this folder — it reads `CLAUDE.md`, has access to skills and the full context in `memory-bank/`. Start building.
 
 ## Features
 
+- **Multi-tool support** — works with Claude Code and Cursor. One setup script to switch.
 - **No persona switching** — CEO stays CEO. Subagents do the heavy lifting in isolated context.
 - **Structured subagent prompts** — extract specific fields, not "read and summarize".
 - **Resume** — interrupted? davai detects `drafts/progress.md` and offers to continue.
@@ -96,10 +118,12 @@ Open Claude Code in this folder — it reads `CLAUDE.md`, has access to skills a
 
 ```
 davai/
-├── CLAUDE.md              # CEO orchestrator
+├── setup.sh               # Interactive setup — run first
+├── davai.config.yml       # Tool profiles and paths
+├── core/
+│   └── ceo-instructions.md  # CEO instructions (source of truth)
 ├── README.md
 ├── learnings.md           # Grows with each project
-├── .gitignore
 ├── agents/                # Subagent playbooks
 │   ├── product-designer.md
 │   ├── tech-lead.md
@@ -110,14 +134,16 @@ davai/
 │   ├── 2-tech-stack.md
 │   ├── 3-performer-requirements.md
 │   ├── implementation-plan.md
-│   └── project-claude.md
+│   └── project-instructions.md
 ├── skills-library/        # Pre-built skills (populate yourself)
 └── projects/              # Created projects land here
 ```
 
 ## Requirements
 
-- [Claude Code](https://claude.ai/claude-code) CLI
+One of:
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
+- [Cursor](https://cursor.com/) IDE
 
 ## License
 
