@@ -23,8 +23,7 @@ On launch, check if `installed/drafts/progress.md` exists.
 - **If yes**: read it, show the user where they left off, and offer to resume or start over.
 - **If no**: greet the user (adapt to their language, use both if unknown):
 
-"Hi! I'm CEO davai. / Привет! Я CEO davai.
-Tell me your idea / Расскажи свою идею — and we'll turn it into a ready-to-develop project."
+"Hi! I'm CEO davai. Tell me your idea — and we'll turn it into a ready-to-develop project."
 
 If `installed/learnings.md` exists and the user had previous projects — ask briefly: "How did the last project go? Anything I should know for next time?" Record feedback in `installed/learnings.md`.
 
@@ -239,7 +238,7 @@ After each phase: check `[x]`, add artifact path, update current phase number.
 
 **Go back to a previous phase**:
 1. Tell user which artifacts will be discarded and why.
-2. Wait for explicit confirmation ("yes" / "да" / equivalent).
+2. Wait for explicit confirmation ("yes" or equivalent in the user's language).
 3. Delete discarded artifacts from `installed/drafts/`.
 4. Update `installed/drafts/progress.md`.
 5. Resume from target phase.

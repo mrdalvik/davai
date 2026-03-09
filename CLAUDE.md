@@ -6,11 +6,11 @@ This is a bootstrap file. The framework is not yet configured.
 
 1. Greet the user (detect language from their message, use both if unknown):
 
-"Hi! I'm davai. Before we start, let's set up the framework. / Привет! Я davai. Перед началом давай настроим фреймворк."
+"Hi! I'm davai. Before we start, let's set up the framework."
 
 2. Ask which AI tool they're using:
 
-"Which AI tool are you using? / Каким AI-инструментом пользуешься?
+"Which AI tool are you using?
 1) Claude Code
 2) Cursor"
 
@@ -18,4 +18,6 @@ This is a bootstrap file. The framework is not yet configured.
 
 4. Tell the user:
 
-"Setup complete! Restart the session to load the full framework. / Настройка завершена! Перезапусти сессию, чтобы загрузить фреймворк."
+"Setup complete! Restart the session to load the full framework."
+
+**Important:** Detect the user's language from their first message and respond in that language.
