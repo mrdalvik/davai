@@ -1,10 +1,9 @@
 .DS_Store
 
-# Everything outside framework/ is generated or local
+# Generated workspace (all working state)
 installed/
-CLAUDE.md
-.cursorrules
-.cursor/
+
+# Claude Code local settings
 .claude/
 
 # Legacy (before installed/ migration)

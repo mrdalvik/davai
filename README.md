@@ -33,28 +33,13 @@ Open the project folder in your AI tool and start development. The AI developer 
 ```bash
 git clone <repo-url> davai
 cd davai
-bash framework/setup.sh
 ```
 
-The setup script asks which AI tool you use and configures davai for it:
-
-```
-  davai — from idea to project
-  ──────────────────────────────
-
-  Which AI tool will you use with davai?
-
-    1) Claude Code
-    2) Cursor
-
-  Your choice (1/2):
-```
-
-Then start your tool:
-- **Claude Code:** `claude` in the davai directory
+Then open the project in your AI tool:
+- **Claude Code:** run `claude` in the davai directory
 - **Cursor:** open the davai folder in Cursor
 
-The CEO agent greets you and guides the entire process.
+On first launch, davai greets you, asks which tool you're using, runs setup automatically, and asks you to restart the session. After that — the CEO agent takes over and guides you through the full pipeline.
 
 ### Switching tools
 

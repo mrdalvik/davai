@@ -114,9 +114,10 @@ echo -e "  ${GREEN}+${NC} Replaced variables ({{ai_tool}} → ${AI_TOOL_NAME})"
 # Build CEO instructions with variable substitution (directly from framework/core/)
 CEO_CONTENT=$(sed "s/{{ai_tool}}/${AI_TOOL_NAME}/g" "$FRAMEWORK_DIR/core/ceo-instructions.md")
 
-# Clean up previous instruction files
+# Clean up bootstrap and previous instruction files
 rm -f "$ROOT_DIR/CLAUDE.md"
 rm -f "$ROOT_DIR/.cursorrules"
+rm -rf "$ROOT_DIR/.cursor/rules/davai-bootstrap.mdc"
 rm -rf "$ROOT_DIR/.cursor/rules/davai-ceo.mdc"
 
 case "$TOOL" in
