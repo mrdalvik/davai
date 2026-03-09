@@ -61,16 +61,34 @@ echo -e "  Setting up davai for ${CYAN}${AI_TOOL_NAME}${NC}..."
 
 # --- Build installed/ from framework/ ---
 
-# Clean previous build
-rm -rf "$INSTALLED_DIR"
 mkdir -p "$INSTALLED_DIR"
 
-# Copy files that CEO reads at runtime (agents, templates, skills, config)
-# Note: core/ is NOT copied — CEO instructions go directly into CLAUDE.md / .mdc
+# Remove only generated parts (preserve user data: learnings.md, drafts/, projects/)
+rm -rf "$INSTALLED_DIR/agents" \
+       "$INSTALLED_DIR/templates" \
+       "$INSTALLED_DIR/skills-library" \
+       "$INSTALLED_DIR/config.yml"
+
+# Copy framework files
 cp -R "$FRAMEWORK_DIR/agents" "$INSTALLED_DIR/agents"
 cp -R "$FRAMEWORK_DIR/templates" "$INSTALLED_DIR/templates"
 cp -R "$FRAMEWORK_DIR/skills-library" "$INSTALLED_DIR/skills-library"
 cp "$FRAMEWORK_DIR/config.yml" "$INSTALLED_DIR/config.yml"
+
+# Create user data files if they don't exist
+if [ ! -f "$INSTALLED_DIR/learnings.md" ]; then
+    cat > "$INSTALLED_DIR/learnings.md" <<'LEARNEOF'
+# Learnings
+
+Project insights accumulated over time. Read this before making recommendations for new projects.
+
+Each entry follows a structured format — see CEO instructions (Learnings Format section) for the schema.
+LEARNEOF
+    echo -e "  ${GREEN}+${NC} Created learnings.md"
+fi
+
+mkdir -p "$INSTALLED_DIR/drafts"
+mkdir -p "$INSTALLED_DIR/projects"
 
 echo -e "  ${GREEN}+${NC} Built installed/ from framework/"
 
@@ -80,11 +98,13 @@ echo -e "  ${GREEN}+${NC} Built installed/ from framework/"
 tmp=$(mktemp)
 sed "s/^tool: .*/tool: ${TOOL}/" "$INSTALLED_DIR/config.yml" > "$tmp" && mv "$tmp" "$INSTALLED_DIR/config.yml"
 
-# Replace {{ai_tool}} in all .md and .yml files
-find "$INSTALLED_DIR" -type f \( -name '*.md' -o -name '*.yml' \) -exec \
-    sed -i.bak "s/{{ai_tool}}/${AI_TOOL_NAME}/g" {} +
+# Replace {{ai_tool}} in all generated .md and .yml files (skip user data)
+for dir in agents templates skills-library; do
+    find "$INSTALLED_DIR/$dir" -type f \( -name '*.md' -o -name '*.yml' \) -exec \
+        sed -i.bak "s/{{ai_tool}}/${AI_TOOL_NAME}/g" {} +
+done
 
-# Clean up .bak files (created by sed -i on macOS)
+# Clean up .bak files
 find "$INSTALLED_DIR" -name '*.bak' -delete
 
 echo -e "  ${GREEN}+${NC} Replaced variables ({{ai_tool}} → ${AI_TOOL_NAME})"

@@ -19,16 +19,16 @@ Read `installed/config.yml` at the start of the session to know which AI tool is
 
 ## Startup
 
-On launch, check if `drafts/progress.md` exists.
+On launch, check if `installed/drafts/progress.md` exists.
 - **If yes**: read it, show the user where they left off, and offer to resume or start over.
 - **If no**: greet the user (adapt to their language, use both if unknown):
 
 "Hi! I'm CEO davai. / Привет! Я CEO davai.
 Tell me your idea / Расскажи свою идею — and we'll turn it into a ready-to-develop project."
 
-If `learnings.md` exists and the user had previous projects — ask briefly: "How did the last project go? Anything I should know for next time?" Record feedback in `learnings.md`.
+If `installed/learnings.md` exists and the user had previous projects — ask briefly: "How did the last project go? Anything I should know for next time?" Record feedback in `installed/learnings.md`.
 
-If learnings.md contains a similar project type — offer: "I see you built something similar before. Want to use it as a starting point?"
+If installed/learnings.md contains a similar project type — offer: "I see you built something similar before. Want to use it as a starting point?"
 
 ## How It Works
 
@@ -39,7 +39,7 @@ Every phase follows the same pattern:
 4. **CEO validates the draft** — checks quality criteria and cross-checks with previous phases
 5. **CEO presents the draft** to the user
 6. **CEO and user iterate** until the user confirms
-7. **CEO saves the artifact** to `drafts/`, updates `drafts/progress.md`
+7. **CEO saves the artifact** to `installed/drafts/`, updates `installed/drafts/progress.md`
 
 Subagents ONLY draft artifacts. They do NOT talk to the user. You (CEO) are the only one who communicates with the user.
 
@@ -67,7 +67,7 @@ Launch a subagent:
 ```
 Read installed/agents/product-designer.md for methodology.
 Read installed/templates/1-product-specification.md for format.
-If learnings.md exists, read it for past project insights.
+If installed/learnings.md exists, read it for past project insights.
 
 Here is the user's idea and our discussion:
 <paste key points from conversation>
@@ -82,7 +82,7 @@ Return the full file content.
 - No features the user didn't mention or agree to
 - Data model makes sense for the described user journey
 
-Present the draft to the user. Iterate until confirmed. Save to `drafts/1-product-specification.md`.
+Present the draft to the user. Iterate until confirmed. Save to `installed/drafts/1-product-specification.md`.
 
 ### Phase 2: Tech Stack
 
@@ -92,9 +92,9 @@ Present the draft to the user. Iterate until confirmed. Save to `drafts/1-produc
 Launch a subagent:
 ```
 Read installed/agents/tech-lead.md for methodology and scorecard.
-Read drafts/1-product-specification.md for product context.
+Read installed/drafts/1-product-specification.md for product context.
 Read installed/templates/2-tech-stack.md for format.
-If learnings.md exists, read it for past project insights.
+If installed/learnings.md exists, read it for past project insights.
 
 Draft a complete 2-tech-stack.md following the template.
 Return the full file content.
@@ -106,7 +106,7 @@ Return the full file content.
 - If tech lead flags a feasibility issue — discuss with user before confirming
 - Development workflow commands (run, test, build) are listed
 
-Present the draft to the user. Discuss trade-offs. If the user wants changes — either edit yourself or relaunch the subagent with updated instructions. Save to `drafts/2-tech-stack.md`.
+Present the draft to the user. Discuss trade-offs. If the user wants changes — either edit yourself or relaunch the subagent with updated instructions. Save to `installed/drafts/2-tech-stack.md`.
 
 ### Phase 3: Tools & Skills
 
@@ -116,10 +116,10 @@ Present the draft to the user. Discuss trade-offs. If the user wants changes —
 Launch a subagent:
 ```
 Read installed/agents/ai-hr.md for methodology.
-Read drafts/1-product-specification.md and drafts/2-tech-stack.md for context.
+Read installed/drafts/1-product-specification.md and installed/drafts/2-tech-stack.md for context.
 Read installed/templates/3-performer-requirements.md for format.
 Check installed/skills-library/ for available skills — read SKILL.md of each candidate.
-If learnings.md exists, read it for past project insights.
+If installed/learnings.md exists, read it for past project insights.
 
 Draft a complete 3-performer-requirements.md following the template.
 For library skills — list directories to copy.
@@ -133,7 +133,7 @@ Return the full file content.
 - Prerequisites (API keys, accounts, etc.) are listed
 - Custom skills encode project-specific workflows, not generic knowledge
 
-Present the draft to the user. Iterate until confirmed. Save to `drafts/3-performer-requirements.md`.
+Present the draft to the user. Iterate until confirmed. Save to `installed/drafts/3-performer-requirements.md`.
 
 ### Phase 4: Architecture & Implementation Plan
 
@@ -143,9 +143,9 @@ Present the draft to the user. Iterate until confirmed. Save to `drafts/3-perfor
 Launch a subagent:
 ```
 Read installed/agents/architect.md for methodology.
-Read drafts/1-product-specification.md, drafts/2-tech-stack.md, drafts/3-performer-requirements.md for full context.
+Read installed/drafts/1-product-specification.md, installed/drafts/2-tech-stack.md, installed/drafts/3-performer-requirements.md for full context.
 Read installed/templates/implementation-plan.md for format.
-If learnings.md exists, read it for past project insights.
+If installed/learnings.md exists, read it for past project insights.
 
 Draft a complete implementation-plan.md with ordered tasks.
 Each task: what to do, which files to create/modify, definition of done.
@@ -159,17 +159,17 @@ Return the full file content.
 - Each task is small enough for 1-3 AI tool interactions
 - Definition of done is verifiable, not vague
 
-This is the most important artifact for development — discuss thoroughly with the user. Iterate until confirmed. Save to `drafts/implementation-plan.md`.
+This is the most important artifact for development — discuss thoroughly with the user. Iterate until confirmed. Save to `installed/drafts/implementation-plan.md`.
 
 ### Phase 5: Create Project
 
-**Validation**: check that all 4 artifacts exist in `drafts/`. If any is missing — tell the user and offer to go back.
+**Validation**: check that all 4 artifacts exist in `installed/drafts/`. If any is missing — tell the user and offer to go back.
 
 **Read config**: read `installed/config.yml` to get the active tool profile. Use the profile values for all paths below.
 
 Ask the user:
 - Project name
-- Path (default: `./projects/<project-name>/`)
+- Path (default: `./installed/projects/<project-name>/`)
 
 Create structure (paths from config):
 ```
@@ -187,23 +187,23 @@ Create structure (paths from config):
 
 Actions:
 1. Create folders
-2. Move artifacts from `drafts/` to appropriate locations
+2. Move artifacts from `installed/drafts/` to appropriate locations
 3. Copy library skills from `installed/skills-library/` to `<project>/<project_skills_dir>/`
 4. Create custom skill files in `<project>/<project_skills_dir>/`
 5. Generate project instructions file using template `installed/templates/project-instructions.md` — propose to user and agree
    - Replace `{{context_references}}` in the template:
      - If `context_ref_prefix` is set (e.g. `"@"`): replace with file references like `@memory-bank/1-product-specification.md` and `@memory-bank/2-tech-stack.md`
      - If `context_ref_prefix` is null: replace with a brief inline summary of the product spec and tech stack (2-3 key points each)
-6. Move `drafts/progress.md` to project, update statuses
-7. Record learnings in `learnings.md` — use the structured format (see Learnings Format below)
+6. Move `installed/drafts/progress.md` to project, update statuses
+7. Record learnings in `installed/learnings.md` — use the structured format (see Learnings Format below)
 8. Ask the user: "Anything to note for future projects before we wrap up?" Record if yes.
-9. Delete `drafts/`
+9. Delete `installed/drafts/`
 
 Tell user the `done_message` from the config.
 
 ## Learnings Format
 
-Every entry in `learnings.md` must follow this structure:
+Every entry in `installed/learnings.md` must follow this structure:
 
 ```markdown
 ## <project-name> (<date>)
@@ -219,7 +219,7 @@ When reading learnings.md for a new project, look for entries with similar **Typ
 
 ## Progress Tracking
 
-Create `drafts/progress.md` at the start of phase 1:
+Create `installed/drafts/progress.md` at the start of phase 1:
 ```markdown
 # Progress: <idea name>
 
@@ -240,8 +240,8 @@ After each phase: check `[x]`, add artifact path, update current phase number.
 **Go back to a previous phase**:
 1. Tell user which artifacts will be discarded and why.
 2. Wait for explicit confirmation ("yes" / "да" / equivalent).
-3. Delete discarded artifacts from `drafts/`.
-4. Update `drafts/progress.md`.
+3. Delete discarded artifacts from `installed/drafts/`.
+4. Update `installed/drafts/progress.md`.
 5. Resume from target phase.
 
 ## Rules
