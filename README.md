@@ -1,6 +1,6 @@
 # davai
 
-An AI-powered framework that takes your IT project from idea to a development-ready setup.
+The first AI framework that turns a raw idea into a fully structured, development-ready project — before a single line of code is written.
 
 Works with **Claude Code** and **Cursor**.
 
@@ -17,7 +17,7 @@ You: "I want to build a Telegram bot that tracks expenses"
    Phase 2: Tech Stack
    Subagent analyzes spec → drafts stack → you review and confirm
         ↓
-   Phase 3: Tools & Skills
+   Phase 3: AI Tools & Skills
    Subagent selects skills, MCP servers, tools → you review and confirm
         ↓
    Phase 4: Architecture & Implementation Plan
@@ -26,7 +26,7 @@ You: "I want to build a Telegram bot that tracks expenses"
    Phase 5: Project Created!
 ```
 
-Open the project folder in your AI tool and start development. The AI developer has everything it needs.
+Open the project folder in your AI tool and start development.
 
 ## Quick start
 
@@ -35,102 +35,47 @@ git clone <repo-url> davai
 cd davai
 ```
 
-Then open the project in your AI tool:
+Open the project in your AI tool:
 - **Claude Code:** run `claude` in the davai directory
 - **Cursor:** open the davai folder in Cursor
 
-On first launch, davai greets you, asks which tool you're using, runs setup automatically, and asks you to restart the session. After that — the CEO agent takes over and guides you through the full pipeline.
+On first launch, davai greets you, asks which tool you're using, runs setup, and asks you to restart the session. After that — the CEO agent takes over and guides you through the full pipeline.
 
 ### Switching tools
 
-Run `bash framework/setup.sh` again to reconfigure. Your learnings, drafts, and projects in `installed/` are preserved — only the framework-derived files are regenerated.
-
-## Architecture
-
-davai never writes code. It orchestrates the **planning phase** of your project.
-
-**CEO** (`framework/core/ceo-instructions.md`) — the orchestrator. Always stays in this role. Talks to you, launches subagents, presents drafts, iterates until you're happy.
-
-**Setup** (`framework/setup.sh`) — builds `installed/` from `framework/`, replacing `{{variables}}` (like `{{ai_tool}}`) with actual values, then generates the tool-specific instruction file in the project root. `framework/` is never modified — it's the immutable source of truth.
-
-**Config** (`framework/config.yml`) — defines paths and formats for each AI tool. The installed copy (`installed/config.yml`) stores the active tool choice.
-
-**Playbooks** (`framework/agents/`) — instructions for subagents. Each playbook defines how to think and what to produce:
-- `product-designer.md` — MoSCoW prioritization, MVP scoping, spec quality criteria
-- `tech-lead.md` — 6-criteria scorecard including AI-friendliness of the stack
-- `ai-hr.md` — skill/tool selection from library + custom creation
-- `architect.md` — task ordering, dependency mapping, verification criteria
-
-**Templates** (`framework/templates/`) — structure for every artifact:
-- `1-product-specification.md` — problem, personas, MoSCoW features, data model, integrations
-- `2-tech-stack.md` — components, AI-friendliness, workflow commands, alternatives
-- `3-performer-requirements.md` — library skills, custom skills, MCP servers, CLI tools
-- `implementation-plan.md` — ordered tasks with files and done-criteria
-- `project-instructions.md` — template for the project's instruction file
-
-**Skills library** (`framework/skills-library/`) — pre-built skills that can be copied into projects. **Not included in the repo** — you populate it yourself with skills relevant to your work. See [`framework/skills-library/README.md`](framework/skills-library/README.md) for setup instructions.
-
-**Learnings** (`installed/learnings.md`) — grows with every project. Records what worked, what didn't, which stacks fit which project types. Subagents read it to make better recommendations. Created automatically on first setup.
+Run `bash framework/setup.sh` to reconfigure. Learnings, drafts, and projects are preserved — only the framework-derived files are regenerated.
 
 ## What you get
 
-After running davai, your project folder contains (paths depend on your AI tool):
+After running through the pipeline, your project folder contains:
 
 ```
 my-project/
-├── <tool-config>/
-│   └── skills/                  # Tailored for your stack
-│       ├── library-skill/       # Copied from davai skills-library
-│       └── custom-skill/        # Created specifically for your project
+├── <tool-config>/                     # .claude/ or .cursor/
+│   └── skills/                        # Tailored for your stack
 ├── memory-bank/
-│   ├── 1-product-specification.md
-│   ├── 2-tech-stack.md
-│   └── 3-performer-requirements.md
-├── implementation-plan.md       # Ordered tasks, ready to execute
-├── progress.md
-└── <instructions-file>          # CLAUDE.md or .cursorrules
+│   ├── 1-product-specification.md     # Problem, personas, MVP features
+│   ├── 2-tech-stack.md               # Stack, workflow commands, alternatives
+│   ├── 3-required-ai-tools.md        # Skills, MCP servers, CLI tools
+│   ├── 4-implementation-plan.md      # Ordered tasks, ready to execute
+│   └── 5-progress.md                 # Task tracking
+└── <instructions-file>                # CLAUDE.md or .cursorrules
 ```
 
 ## Features
 
-- **Multi-tool support** — works with Claude Code and Cursor. One setup script to switch.
-- **No persona switching** — CEO stays CEO. Subagents do the heavy lifting in isolated context.
-- **Structured subagent prompts** — extract specific fields, not "read and summarize".
-- **Resume** — interrupted? davai detects `installed/drafts/progress.md` and offers to continue.
-- **Rollback** — redo any phase or go back. Artifacts are managed automatically.
-- **Learning** — each project teaches davai. Past insights inform future recommendations.
-- **Language-adaptive** — works in any language. Detects from your first message.
-
-## Project structure
-
-```
-davai/
-├── README.md
-│
-├── framework/                 # Immutable source (templates with {{variables}})
-│   ├── setup.sh               # Interactive setup — run first
-│   ├── config.yml             # Tool profiles template
-│   ├── core/
-│   │   └── ceo-instructions.md
-│   ├── agents/
-│   ├── templates/
-│   └── skills-library/        # Pre-built skills (populate yourself)
-│
-└── installed/                 # Generated by setup.sh (gitignored)
-    ├── config.yml             # Active tool set
-    ├── agents/                # {{ai_tool}} → "Claude Code" / "Cursor"
-    ├── templates/
-    ├── skills-library/
-    ├── learnings.md           # Grows with each project
-    ├── drafts/                # Temp artifacts during planning
-    └── projects/              # Created projects (can have own git repos)
-```
+- **Multi-tool support** — works with Claude Code and Cursor
+- **Phase validation** — readiness checklists, cross-checks between phases
+- **Resume & rollback** — continue where you left off or redo any phase
+- **Learning** — each project teaches davai, past insights inform future recommendations
 
 ## Requirements
 
 One of:
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
 - [Cursor](https://cursor.com/) IDE
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for technical details.
 
 ## License
 

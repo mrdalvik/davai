@@ -105,9 +105,9 @@ Return the full file content.
 - If tech lead flags a feasibility issue — discuss with user before confirming
 - Development workflow commands (run, test, build) are listed
 
-Present the draft to the user. Discuss trade-offs. If the user wants changes — either edit yourself or relaunch the subagent with updated instructions. Save to `installed/drafts/2-tech-stack.md`.
+Present the draft to the user. Discuss trade-offs. If the user wants minor changes — apply them directly. For major rework — relaunch the subagent with updated instructions. Save to `installed/drafts/2-tech-stack.md`.
 
-### Phase 3: Tools & Skills
+### Phase 3: AI Tools & Skills
 
 **Ready to launch subagent when:**
 - [ ] Phase 1 and Phase 2 artifacts are confirmed
@@ -116,11 +116,11 @@ Launch a subagent:
 ```
 Read installed/agents/ai-hr.md for methodology.
 Read installed/drafts/1-product-specification.md and installed/drafts/2-tech-stack.md for context.
-Read installed/templates/3-performer-requirements.md for format.
+Read installed/templates/3-required-ai-tools.md for format.
 Check installed/skills-library/ for available skills — read SKILL.md of each candidate.
 If installed/learnings.md exists, read it for past project insights.
 
-Draft a complete 3-performer-requirements.md following the template.
+Draft a complete 3-required-ai-tools.md following the template.
 For library skills — list directories to copy.
 For custom skills — write full SKILL.md content.
 Return the full file content.
@@ -132,7 +132,7 @@ Return the full file content.
 - Prerequisites (API keys, accounts, etc.) are listed
 - Custom skills encode project-specific workflows, not generic knowledge
 
-Present the draft to the user. Iterate until confirmed. Save to `installed/drafts/3-performer-requirements.md`.
+Present the draft to the user. Iterate until confirmed. Save to `installed/drafts/3-required-ai-tools.md`.
 
 ### Phase 4: Architecture & Implementation Plan
 
@@ -142,11 +142,11 @@ Present the draft to the user. Iterate until confirmed. Save to `installed/draft
 Launch a subagent:
 ```
 Read installed/agents/architect.md for methodology.
-Read installed/drafts/1-product-specification.md, installed/drafts/2-tech-stack.md, installed/drafts/3-performer-requirements.md for full context.
-Read installed/templates/implementation-plan.md for format.
+Read installed/drafts/1-product-specification.md, installed/drafts/2-tech-stack.md, installed/drafts/3-required-ai-tools.md for full context.
+Read installed/templates/4-implementation-plan.md for format.
 If installed/learnings.md exists, read it for past project insights.
 
-Draft a complete implementation-plan.md with ordered tasks.
+Draft a complete 4-implementation-plan.md with ordered tasks.
 Each task: what to do, which files to create/modify, definition of done.
 Return the full file content.
 ```
@@ -158,7 +158,7 @@ Return the full file content.
 - Each task is small enough for 1-3 AI tool interactions
 - Definition of done is verifiable, not vague
 
-This is the most important artifact for development — discuss thoroughly with the user. Iterate until confirmed. Save to `installed/drafts/implementation-plan.md`.
+This is the most important artifact for development — discuss thoroughly with the user. Iterate until confirmed. Save to `installed/drafts/4-implementation-plan.md`.
 
 ### Phase 5: Create Project
 
@@ -174,26 +174,26 @@ Create structure (paths from config):
 ```
 <project-dir>/
 ├── <tool_config_dir>/
-│   └── skills/              # Skills from 3-performer-requirements.md
+│   └── skills/              # Skills from 3-required-ai-tools.md
 ├── memory-bank/
 │   ├── 1-product-specification.md
 │   ├── 2-tech-stack.md
-│   └── 3-performer-requirements.md
-├── implementation-plan.md
-├── progress.md
+│   ├── 3-required-ai-tools.md
+│   ├── 4-implementation-plan.md
+│   └── 5-progress.md
 └── <project_instructions_file>
 ```
 
 Actions:
 1. Create folders
-2. Move artifacts from `installed/drafts/` to appropriate locations
+2. Move artifacts from `installed/drafts/` to `memory-bank/`
 3. Copy library skills from `installed/skills-library/` to `<project>/<project_skills_dir>/`
 4. Create custom skill files in `<project>/<project_skills_dir>/`
 5. Generate project instructions file using template `installed/templates/project-instructions.md` — propose to user and agree
    - Replace `{{context_references}}` in the template:
-     - If `context_ref_prefix` is set (e.g. `"@"`): replace with file references like `@memory-bank/1-product-specification.md` and `@memory-bank/2-tech-stack.md`
+     - If `context_ref_prefix` is set (e.g. `"@"`): replace with file references like `@memory-bank/1-product-specification.md`, `@memory-bank/2-tech-stack.md`, etc.
      - If `context_ref_prefix` is null: replace with a brief inline summary of the product spec and tech stack (2-3 key points each)
-6. Move `installed/drafts/progress.md` to project, update statuses
+6. Move `installed/drafts/progress.md` to project as `memory-bank/5-progress.md`, update statuses
 7. Record learnings in `installed/learnings.md` — use the structured format (see Learnings Format below)
 8. Ask the user: "Anything to note for future projects before we wrap up?" Record if yes.
 9. Delete `installed/drafts/`
@@ -226,7 +226,7 @@ Create `installed/drafts/progress.md` at the start of phase 1:
 
 - [ ] Phase 1: Product Specification
 - [ ] Phase 2: Tech Stack
-- [ ] Phase 3: Tools & Skills
+- [ ] Phase 3: AI Tools & Skills
 - [ ] Phase 4: Architecture & Plan
 - [ ] Phase 5: Create Project
 ```

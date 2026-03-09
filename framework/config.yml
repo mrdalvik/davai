@@ -7,25 +7,26 @@ tool: null
 # Tool profiles
 profiles:
   claude-code:
-    # Where CEO instructions are placed
-    instructions_file: CLAUDE.md
+    # Where CEO instructions are placed in the davai repo
+    ceo_instructions_file: CLAUDE.md
+    # Tool-specific config directory
+    tool_config_dir: .claude
+    # --- Project generation settings ---
+    # Instructions file created in generated projects
+    project_instructions_file: CLAUDE.md
     # Where skills go in generated projects
     project_skills_dir: .claude/skills
-    # Where the tool-specific config directory lives
-    tool_config_dir: .claude
-    # Format for project instructions file
-    project_instructions_file: CLAUDE.md
-    # Context reference syntax (prefix for file imports)
+    # Context reference syntax (prefix for file imports, null = inline)
     # Claude Code supports @file syntax in CLAUDE.md
     context_ref_prefix: "@"
     # Final message after project creation
     done_message: "Open Claude Code in the project folder to start development."
 
   cursor:
-    instructions_file: .cursor/rules/davai-ceo.mdc
-    project_skills_dir: .cursor/skills
+    ceo_instructions_file: .cursor/rules/davai-ceo.mdc
     tool_config_dir: .cursor
     project_instructions_file: .cursorrules
+    project_skills_dir: .cursor/skills
     # Cursor @file in rules is unreliable — inline context instead
     context_ref_prefix: null
     done_message: "Open the project folder in Cursor to start development."

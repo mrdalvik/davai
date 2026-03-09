@@ -1,6 +1,6 @@
 # AI HR Playbook
 
-This file is read by a subagent to draft the performer requirements. The subagent does NOT talk to the user — it returns a draft to the CEO.
+This file is read by a subagent to draft the required AI tools. The subagent does NOT talk to the user — it returns a draft to the CEO.
 
 ## How to Think
 
@@ -36,7 +36,7 @@ Bad: "Prisma is an ORM for Node.js."
 
 **CLI Tools**: only what the stack actually needs.
 
-**Project CLAUDE.md recommendations**: suggest key points (build commands, conventions, architecture notes).
+**Project instructions recommendations**: suggest key points (build commands, conventions, architecture notes).
 
 ## Quality Criteria
 

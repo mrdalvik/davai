@@ -61,6 +61,18 @@ echo -e "  Setting up davai for ${CYAN}${AI_TOOL_NAME}${NC}..."
 
 # --- Build installed/ from framework/ ---
 
+# Validate framework files exist
+for dir in agents templates skills-library; do
+    if [ ! -d "$FRAMEWORK_DIR/$dir" ]; then
+        echo -e "\n  ${RED}Missing framework/$dir — framework files are incomplete.${NC}\n"
+        exit 1
+    fi
+done
+if [ ! -f "$FRAMEWORK_DIR/config.yml" ] || [ ! -f "$FRAMEWORK_DIR/core/ceo-instructions.md" ]; then
+    echo -e "\n  ${RED}Missing framework files — config.yml or core/ceo-instructions.md not found.${NC}\n"
+    exit 1
+fi
+
 mkdir -p "$INSTALLED_DIR"
 
 # Remove only generated parts (preserve user data: learnings.md, drafts/, projects/)

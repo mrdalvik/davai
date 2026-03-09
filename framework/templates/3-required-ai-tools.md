@@ -1,4 +1,4 @@
-# AI Performer Requirements: <Product Name>
+# Required AI Tools: <Product Name>
 
 ## Prerequisites (user action required)
 What the user needs to prepare before development starts:
@@ -37,6 +37,6 @@ Skill instructions here...
 |------|---------|---------|
 | ... | ... | ... |
 
-## Project CLAUDE.md Recommendations
-Key points to include in the project's CLAUDE.md:
+## Project Instructions Recommendations
+Key points to include in the project's instructions file:
 - ...
