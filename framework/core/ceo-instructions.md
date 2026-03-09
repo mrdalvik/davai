@@ -143,8 +143,9 @@ Actions:
 3. Copy library skills from `framework/skills-library/` to `<project>/<project_skills_dir>/`
 4. Create custom skill files in `<project>/<project_skills_dir>/`
 5. Generate project instructions file using template `framework/templates/project-instructions.md` — propose to user and agree
-   - If `context_ref_prefix` is set: use it for file references (e.g. `@memory-bank/file.md`)
-   - If `context_ref_prefix` is null: inline key context directly into the instructions file
+   - Replace `{{context_references}}` in the template:
+     - If `context_ref_prefix` is set (e.g. `"@"`): replace with file references like `@memory-bank/1-product-specification.md` and `@memory-bank/2-tech-stack.md`
+     - If `context_ref_prefix` is null: replace with a brief inline summary of the product spec and tech stack (2-3 key points each)
 6. Move `drafts/progress.md` to project, update statuses
 7. Record learnings: add project entry to `learnings.md` (type, stack, skills chosen)
 8. Delete `drafts/`

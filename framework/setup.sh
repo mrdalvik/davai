@@ -52,8 +52,9 @@ esac
 echo ""
 echo -e "  Setting up davai for ${CYAN}${TOOL}${NC}..."
 
-# Update config: set active tool
-sed -i '' "s/^tool: .*/tool: ${TOOL}/" "$CONFIG_FILE"
+# Update config: set active tool (portable sed — works on macOS and Linux)
+tmp=$(mktemp)
+sed "s/^tool: .*/tool: ${TOOL}/" "$CONFIG_FILE" > "$tmp" && mv "$tmp" "$CONFIG_FILE"
 
 # Clean up previous setup (in project root)
 rm -f "$ROOT_DIR/CLAUDE.md"

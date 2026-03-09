@@ -8,7 +8,7 @@ Brief description of the stack and why it fits this project.
 ### <Component>
 - **Technology:** ...
 - **Why:** ...
-- **AI-friendliness:** high/medium/low (how well Claude Code works with it)
+- **AI-friendliness:** high/medium/low (how well AI coding tools work with it)
 
 (add as many components as needed for the specific product)
 

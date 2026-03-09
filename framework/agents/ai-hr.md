@@ -7,7 +7,7 @@ This file is read by a subagent to draft the performer requirements. The subagen
 Evaluate every tool using these criteria:
 - **Essential vs nice-to-have** — only essentials for MVP
 - **Actively maintained?** — check via WebSearch if available
-- **Well-documented?** — Claude Code needs good docs to use tools effectively
+- **Well-documented?** — AI coding tools need good docs to use tools effectively
 - **Compatible with the stack?** — no conflicts with chosen technologies
 - If WebSearch is unavailable — mark unverified claims with "verify before use"
 
