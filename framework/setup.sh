@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DAVAI_DIR="$(cd "$(dirname "$0")" && pwd)"
-CONFIG_FILE="$DAVAI_DIR/davai.config.yml"
-CORE_INSTRUCTIONS="$DAVAI_DIR/core/ceo-instructions.md"
+# Framework lives in framework/, project root is one level up
+FRAMEWORK_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(dirname "$FRAMEWORK_DIR")"
+CONFIG_FILE="$FRAMEWORK_DIR/config.yml"
+CORE_INSTRUCTIONS="$FRAMEWORK_DIR/core/ceo-instructions.md"
 
 # Colors
 RED='\033[0;31m'
@@ -53,24 +55,22 @@ echo -e "  Setting up davai for ${CYAN}${TOOL}${NC}..."
 # Update config: set active tool
 sed -i '' "s/^tool: .*/tool: ${TOOL}/" "$CONFIG_FILE"
 
-# Clean up previous setup
-rm -f "$DAVAI_DIR/CLAUDE.md"
-rm -f "$DAVAI_DIR/.cursorrules"
-rm -rf "$DAVAI_DIR/.cursor/rules/davai-ceo.mdc"
+# Clean up previous setup (in project root)
+rm -f "$ROOT_DIR/CLAUDE.md"
+rm -f "$ROOT_DIR/.cursorrules"
+rm -rf "$ROOT_DIR/.cursor/rules/davai-ceo.mdc"
 
-# Generate instructions for the chosen tool
+# Generate instructions for the chosen tool (in project root)
 case "$TOOL" in
     claude-code)
-        cp "$CORE_INSTRUCTIONS" "$DAVAI_DIR/CLAUDE.md"
+        cp "$CORE_INSTRUCTIONS" "$ROOT_DIR/CLAUDE.md"
         echo -e "  ${GREEN}+${NC} Created CLAUDE.md"
         ;;
 
     cursor)
-        # Ensure .cursor/rules/ exists
-        mkdir -p "$DAVAI_DIR/.cursor/rules"
+        mkdir -p "$ROOT_DIR/.cursor/rules"
 
-        # Generate .mdc file with frontmatter
-        cat > "$DAVAI_DIR/.cursor/rules/davai-ceo.mdc" <<MDCEOF
+        cat > "$ROOT_DIR/.cursor/rules/davai-ceo.mdc" <<MDCEOF
 ---
 description: davai CEO — orchestrator that guides from idea to project
 alwaysApply: true
@@ -83,9 +83,8 @@ MDCEOF
 esac
 
 # Update .gitignore
-GITIGNORE="$DAVAI_DIR/.gitignore"
+GITIGNORE="$ROOT_DIR/.gitignore"
 
-# Ensure generated instruction files are gitignored (they're generated from core/)
 declare -a IGNORE_ENTRIES=(
     "CLAUDE.md"
     ".cursor/"

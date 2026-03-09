@@ -10,7 +10,7 @@ Detect the user's language from their first message. ALL communication and artif
 
 ## Configuration
 
-Read `davai.config.yml` at the start of each session to know which AI tool is active and what paths to use. The config defines:
+Read `framework/config.yml` at the start of each session to know which AI tool is active and what paths to use. The config defines:
 - `tool` — the active AI tool (claude-code, cursor)
 - `profiles.<tool>.project_skills_dir` — where to put skills in generated projects
 - `profiles.<tool>.project_instructions_file` — name of the instructions file in generated projects
@@ -32,7 +32,7 @@ If `learnings.md` exists and the user had previous projects — ask briefly: "Ho
 
 Every phase follows the same pattern:
 1. **CEO gathers context** from the user through dialogue
-2. **CEO launches a subagent** that reads relevant files, follows the playbook from `agents/`, and drafts an artifact
+2. **CEO launches a subagent** that reads relevant files, follows the playbook from `framework/agents/`, and drafts an artifact
 3. **CEO presents the draft** to the user
 4. **CEO and user iterate** until the user confirms
 5. **CEO saves the artifact** to `drafts/`, updates `drafts/progress.md`
@@ -51,8 +51,8 @@ Gather the idea from the user. Ask questions in batches of 2-3:
 
 When you have enough context, launch a subagent:
 ```
-Read agents/product-designer.md for methodology.
-Read templates/1-product-specification.md for format.
+Read framework/agents/product-designer.md for methodology.
+Read framework/templates/1-product-specification.md for format.
 If learnings.md exists, read it for past project insights.
 
 Here is the user's idea and our discussion:
@@ -68,9 +68,9 @@ Present the draft to the user. Iterate until confirmed. Save to `drafts/1-produc
 
 Launch a subagent:
 ```
-Read agents/tech-lead.md for methodology and scorecard.
+Read framework/agents/tech-lead.md for methodology and scorecard.
 Read drafts/1-product-specification.md for product context.
-Read templates/2-tech-stack.md for format.
+Read framework/templates/2-tech-stack.md for format.
 If learnings.md exists, read it for past project insights.
 
 Draft a complete 2-tech-stack.md following the template.
@@ -83,10 +83,10 @@ Present the draft to the user. Discuss trade-offs. If the user wants changes —
 
 Launch a subagent:
 ```
-Read agents/ai-hr.md for methodology.
+Read framework/agents/ai-hr.md for methodology.
 Read drafts/1-product-specification.md and drafts/2-tech-stack.md for context.
-Read templates/3-performer-requirements.md for format.
-Check skills-library/ for available skills — read SKILL.md of each candidate.
+Read framework/templates/3-performer-requirements.md for format.
+Check framework/skills-library/ for available skills — read SKILL.md of each candidate.
 If learnings.md exists, read it for past project insights.
 
 Draft a complete 3-performer-requirements.md following the template.
@@ -101,9 +101,9 @@ Present the draft to the user. Iterate until confirmed. Save to `drafts/3-perfor
 
 Launch a subagent:
 ```
-Read agents/architect.md for methodology.
+Read framework/agents/architect.md for methodology.
 Read drafts/1-product-specification.md, drafts/2-tech-stack.md, drafts/3-performer-requirements.md for full context.
-Read templates/implementation-plan.md for format.
+Read framework/templates/implementation-plan.md for format.
 If learnings.md exists, read it for past project insights.
 
 Draft a complete implementation-plan.md with ordered tasks.
@@ -117,7 +117,7 @@ Present the draft to the user. This is the most important artifact for developme
 
 **Validation**: check that all 4 artifacts exist in `drafts/`. If any is missing — tell the user and offer to go back.
 
-**Read config**: read `davai.config.yml` to get the active tool profile. Use the profile values for all paths below.
+**Read config**: read `framework/config.yml` to get the active tool profile. Use the profile values for all paths below.
 
 Ask the user:
 - Project name
@@ -140,9 +140,9 @@ Create structure (paths from config):
 Actions:
 1. Create folders
 2. Move artifacts from `drafts/` to appropriate locations
-3. Copy library skills from `skills-library/` to `<project>/<project_skills_dir>/`
+3. Copy library skills from `framework/skills-library/` to `<project>/<project_skills_dir>/`
 4. Create custom skill files in `<project>/<project_skills_dir>/`
-5. Generate project instructions file using template `templates/project-instructions.md` — propose to user and agree
+5. Generate project instructions file using template `framework/templates/project-instructions.md` — propose to user and agree
    - If `context_ref_prefix` is set: use it for file references (e.g. `@memory-bank/file.md`)
    - If `context_ref_prefix` is null: inline key context directly into the instructions file
 6. Move `drafts/progress.md` to project, update statuses

@@ -33,7 +33,7 @@ Open the project folder in your AI tool and start development. The AI developer 
 ```bash
 git clone <repo-url> davai
 cd davai
-bash setup.sh
+bash framework/setup.sh
 ```
 
 The setup script asks which AI tool you use and configures davai for it:
@@ -58,30 +58,30 @@ The CEO agent greets you and guides the entire process.
 
 ### Switching tools
 
-Run `bash setup.sh` again to reconfigure. Your drafts and projects are preserved — only the instruction files are regenerated.
+Run `bash framework/setup.sh` again to reconfigure. Your drafts and projects are preserved — only the instruction files are regenerated.
 
 ## Architecture
 
 davai never writes code. It orchestrates the **planning phase** of your project.
 
-**CEO** (`core/ceo-instructions.md`) — the orchestrator. Always stays in this role. Talks to you, launches subagents, presents drafts, iterates until you're happy. The setup script generates tool-specific instruction files from this source.
+**CEO** (`framework/core/ceo-instructions.md`) — the orchestrator. Always stays in this role. Talks to you, launches subagents, presents drafts, iterates until you're happy. The setup script generates tool-specific instruction files from this source.
 
-**Config** (`davai.config.yml`) — defines paths and formats for each AI tool. CEO reads this at runtime to know where to put skills, how to name instruction files, etc.
+**Config** (`framework/config.yml`) — defines paths and formats for each AI tool. CEO reads this at runtime to know where to put skills, how to name instruction files, etc.
 
-**Playbooks** (`agents/`) — instructions for subagents. Each playbook defines how to think and what to produce:
+**Playbooks** (`framework/agents/`) — instructions for subagents. Each playbook defines how to think and what to produce:
 - `product-designer.md` — MoSCoW prioritization, MVP scoping, spec quality criteria
 - `tech-lead.md` — 6-criteria scorecard including AI-friendliness of the stack
 - `ai-hr.md` — skill/tool selection from library + custom creation
 - `architect.md` — task ordering, dependency mapping, verification criteria
 
-**Templates** (`templates/`) — structure for every artifact:
+**Templates** (`framework/templates/`) — structure for every artifact:
 - `1-product-specification.md` — problem, personas, MoSCoW features, data model, integrations
 - `2-tech-stack.md` — components, AI-friendliness, workflow commands, alternatives
 - `3-performer-requirements.md` — library skills, custom skills, MCP servers, CLI tools
 - `implementation-plan.md` — ordered tasks with files and done-criteria
 - `project-instructions.md` — template for the project's instruction file
 
-**Skills library** (`skills-library/`) — pre-built skills that can be copied into projects. **Not included in the repo** — you populate it yourself with skills relevant to your work. See [`skills-library/README.md`](skills-library/README.md) for setup instructions.
+**Skills library** (`framework/skills-library/`) — pre-built skills that can be copied into projects. **Not included in the repo** — you populate it yourself with skills relevant to your work. See [`framework/skills-library/README.md`](framework/skills-library/README.md) for setup instructions.
 
 **Learnings** (`learnings.md`) — grows with every project. Records what worked, what didn't, which stacks fit which project types. Subagents read it to make better recommendations.
 
@@ -118,25 +118,28 @@ my-project/
 
 ```
 davai/
-├── setup.sh               # Interactive setup — run first
-├── davai.config.yml       # Tool profiles and paths
-├── core/
-│   └── ceo-instructions.md  # CEO instructions (source of truth)
 ├── README.md
-├── learnings.md           # Grows with each project
-├── agents/                # Subagent playbooks
-│   ├── product-designer.md
-│   ├── tech-lead.md
-│   ├── ai-hr.md
-│   └── architect.md
-├── templates/             # Artifact templates
-│   ├── 1-product-specification.md
-│   ├── 2-tech-stack.md
-│   ├── 3-performer-requirements.md
-│   ├── implementation-plan.md
-│   └── project-instructions.md
-├── skills-library/        # Pre-built skills (populate yourself)
-└── projects/              # Created projects land here
+├── learnings.md               # Grows with each project
+├── drafts/                    # Temp artifacts (auto-created)
+├── projects/                  # Created projects land here
+│
+└── framework/                 # All framework internals
+    ├── setup.sh               # Interactive setup — run first
+    ├── config.yml             # Tool profiles and paths
+    ├── core/
+    │   └── ceo-instructions.md  # CEO instructions (source of truth)
+    ├── agents/                # Subagent playbooks
+    │   ├── product-designer.md
+    │   ├── tech-lead.md
+    │   ├── ai-hr.md
+    │   └── architect.md
+    ├── templates/             # Artifact templates
+    │   ├── 1-product-specification.md
+    │   ├── 2-tech-stack.md
+    │   ├── 3-performer-requirements.md
+    │   ├── implementation-plan.md
+    │   └── project-instructions.md
+    └── skills-library/        # Pre-built skills (populate yourself)
 ```
 
 ## Requirements
