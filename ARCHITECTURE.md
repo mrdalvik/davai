@@ -21,12 +21,14 @@ The repo ships with minimal bootstrap files (`CLAUDE.md` and `.cursor/rules/dava
 - `tech-lead.md` — 6-criteria scorecard including AI-friendliness of the stack
 - `ai-hr.md` — skill/tool selection from library + custom creation
 - `architect.md` — task ordering, dependency mapping, verification criteria
+- `security-specialist.md` — threat modeling, stack-specific security requirements
 
 **Templates** (`framework/templates/`) — structure for every artifact:
 - `1-product-specification.md` — problem, personas, MoSCoW features, data model, integrations
 - `2-tech-stack.md` — components, AI-friendliness, workflow commands, alternatives
 - `3-required-ai-tools.md` — skills, MCP servers, CLI tools
 - `4-implementation-plan.md` — ordered tasks with files and done-criteria
+- `5-security-requirements.md` — threat model, data classification, security checklist
 - `project-instructions.md` — template for the project's instruction file
 
 **Library** (`framework/library/`) — pre-built skills and MCP servers that can be copied into projects. Not included in the repo — you populate it yourself. See [`framework/library/README.md`](framework/library/README.md).
@@ -74,7 +76,8 @@ Each phase follows the same pattern: CEO gathers context → checks readiness �
 | 2. Tech Stack | tech-lead | `2-tech-stack.md` | Every integration covered, complexity matches MVP |
 | 3. AI Tools & Skills | ai-hr | `3-required-ai-tools.md` | No redundant tools, prerequisites listed |
 | 4. Implementation Plan | architect | `4-implementation-plan.md` | All features covered, dependencies respected |
-| 5. Create Project | — | Final project folder | All 4 artifacts validated |
+| 5. Security Requirements | security-specialist | `5-security-requirements.md` | Threats are real, requirements match stack |
+| 6. Create Project | — | Final project folder | All 5 artifacts validated |
 
 ## Config profiles
 

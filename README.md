@@ -4,7 +4,7 @@ The first AI framework that turns a raw idea into a fully structured, developmen
 
 Works with **Claude Code** and **Cursor**.
 
-You describe an idea. Davai walks you through product specification, tech stack selection, tooling, and architecture — then creates a project folder with everything an AI developer needs to start building.
+You describe an idea. Davai walks you through product specification, tech stack selection, tooling, security, and architecture — then creates a project folder with everything an AI developer needs to start building.
 
 ## How it works
 
@@ -23,7 +23,10 @@ You: "I want to build a Telegram bot that tracks expenses"
    Phase 4: Architecture & Implementation Plan
    Subagent designs architecture → ordered task list → you review and confirm
         ↓
-   Phase 5: Project Created!
+   Phase 5: Security Requirements
+   Subagent analyzes threats → security requirements for your stack → you review
+        ↓
+   Phase 6: Project Created!
 ```
 
 Open the project folder in your AI tool and start development.
@@ -58,13 +61,15 @@ my-project/
 │   ├── 2-tech-stack.md               # Stack, workflow commands, alternatives
 │   ├── 3-required-ai-tools.md        # Skills, MCP servers, CLI tools
 │   ├── 4-implementation-plan.md      # Ordered tasks, ready to execute
-│   └── 5-progress.md                 # Task tracking
+│   ├── 5-security-requirements.md    # Threat model, security checklist
+│   └── 6-progress.md                 # Task tracking
 └── <instructions-file>                # CLAUDE.md or .cursorrules
 ```
 
 ## Features
 
 - **Multi-tool support** — works with Claude Code and Cursor
+- **Security by design** — threat modeling and security requirements are built into the planning phase, before any code is written
 - **Phase validation** — readiness checklists, cross-checks between phases
 - **Resume & rollback** — continue where you left off or redo any phase
 - **Learning** — each project teaches Davai, past insights inform future recommendations

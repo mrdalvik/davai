@@ -160,9 +160,34 @@ Return the full file content.
 
 This is the most important artifact for development — discuss thoroughly with the user. Iterate until confirmed. Save to `installed/drafts/4-implementation-plan.md`.
 
-### Phase 5: Create Project
+### Phase 5: Security Requirements
 
-**Validation**: check that all 4 artifacts exist in `installed/drafts/`. If any is missing — tell the user and offer to go back.
+**Ready to launch subagent when:**
+- [ ] Phase 1, 2, 3, and 4 artifacts are confirmed
+
+Launch a subagent:
+```
+Read installed/agents/security-specialist.md for methodology.
+Read installed/drafts/1-product-specification.md, installed/drafts/2-tech-stack.md for context.
+Read installed/templates/5-security-requirements.md for format.
+If installed/learnings.md exists, read it for past project insights.
+
+Draft a complete 5-security-requirements.md with threat model and requirements specific to this project and stack.
+Return the full file content.
+```
+
+**Before confirming, cross-check with Phase 1-4:**
+- Every sensitive data type from the spec has a protection strategy
+- Requirements are specific to the chosen stack (not generic)
+- Auth approach matches the product's user model
+- No security theater — every requirement addresses a real threat
+- Security checklist items can be integrated into the implementation plan
+
+Present the draft to the user. Iterate until confirmed. Save to `installed/drafts/5-security-requirements.md`.
+
+### Phase 6: Create Project
+
+**Validation**: check that all 5 artifacts exist in `installed/drafts/`. If any is missing — tell the user and offer to go back.
 
 **Read config**: read `installed/config.yml` to get the active tool profile. Use the profile values for all paths below.
 
@@ -180,7 +205,8 @@ Create structure (paths from config):
 │   ├── 2-tech-stack.md
 │   ├── 3-required-ai-tools.md
 │   ├── 4-implementation-plan.md
-│   └── 5-progress.md
+│   ├── 5-security-requirements.md
+│   └── 6-progress.md
 └── <project_instructions_file>
 ```
 
@@ -193,7 +219,7 @@ Actions:
    - Replace `{{context_references}}` in the template:
      - If `context_ref_prefix` is set (e.g. `"@"`): replace with file references like `@memory-bank/1-product-specification.md`, `@memory-bank/2-tech-stack.md`, etc.
      - If `context_ref_prefix` is null: replace with a brief inline summary of the product spec and tech stack (2-3 key points each)
-6. Move `installed/drafts/progress.md` to project as `memory-bank/5-progress.md`, update statuses
+6. Move `installed/drafts/progress.md` to project as `memory-bank/6-progress.md`, update statuses
 7. Record learnings in `installed/learnings.md` — use the structured format (see Learnings Format below)
 8. Ask the user: "Anything to note for future projects before we wrap up?" Record if yes.
 9. Delete `installed/drafts/`
@@ -228,7 +254,8 @@ Create `installed/drafts/progress.md` at the start of phase 1:
 - [ ] Phase 2: Tech Stack
 - [ ] Phase 3: AI Tools & Skills
 - [ ] Phase 4: Architecture & Plan
-- [ ] Phase 5: Create Project
+- [ ] Phase 5: Security Requirements
+- [ ] Phase 6: Create Project
 ```
 After each phase: check `[x]`, add artifact path, update current phase number.
 
