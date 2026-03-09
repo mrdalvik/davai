@@ -7,7 +7,7 @@ This file is read by a subagent to draft the tech stack. The subagent does NOT t
 Evaluate every technology using this scorecard (in priority order for MVP):
 
 1. **Speed of development** — how fast can we build the MVP?
-2. **AI-friendliness** — how well do AI coding tools work with this? Prefer popular, well-documented frameworks. Niche/exotic = worse AI assistance.
+2. **AI-friendliness** — how well does {{ai_tool}} work with this? Prefer popular, well-documented frameworks. Niche/exotic = worse AI assistance.
 3. **User familiarity** — prefer user's known tech IF reasonable for the task. If user knows Java but it's a Telegram bot — recommend Python and explain why.
 4. **Community & docs** — well-documented, actively maintained, large community?
 5. **Ecosystem fit** — established combos preferred (Next.js+Vercel, Django+PostgreSQL, etc.)

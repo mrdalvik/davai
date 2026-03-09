@@ -4,8 +4,7 @@ set -euo pipefail
 # Framework lives in framework/, project root is one level up
 FRAMEWORK_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(dirname "$FRAMEWORK_DIR")"
-CONFIG_FILE="$FRAMEWORK_DIR/config.yml"
-CORE_INSTRUCTIONS="$FRAMEWORK_DIR/core/ceo-instructions.md"
+INSTALLED_DIR="$ROOT_DIR/installed"
 
 # Colors
 RED='\033[0;31m'
@@ -20,16 +19,18 @@ echo -e "  ───────────────────────
 echo ""
 
 # Check if already configured
-CURRENT_TOOL=$(grep '^tool:' "$CONFIG_FILE" 2>/dev/null | sed 's/tool: *//' || echo "null")
-if [ "$CURRENT_TOOL" != "null" ] && [ -n "$CURRENT_TOOL" ]; then
-    echo -e "  Currently configured for: ${CYAN}${CURRENT_TOOL}${NC}"
-    echo ""
-    read -rp "  Reconfigure? (y/N): " RECONFIGURE
-    if [[ ! "$RECONFIGURE" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${GREEN}Nothing changed.${NC}\n"
-        exit 0
+if [ -f "$INSTALLED_DIR/config.yml" ]; then
+    CURRENT_TOOL=$(grep '^tool:' "$INSTALLED_DIR/config.yml" 2>/dev/null | sed 's/tool: *//' || echo "null")
+    if [ "$CURRENT_TOOL" != "null" ] && [ -n "$CURRENT_TOOL" ]; then
+        echo -e "  Currently configured for: ${CYAN}${CURRENT_TOOL}${NC}"
+        echo ""
+        read -rp "  Reconfigure? (y/N): " RECONFIGURE
+        if [[ ! "$RECONFIGURE" =~ ^[Yy]$ ]]; then
+            echo -e "\n  ${GREEN}Nothing changed.${NC}\n"
+            exit 0
+        fi
+        echo ""
     fi
-    echo ""
 fi
 
 # Choose tool
@@ -41,8 +42,14 @@ echo ""
 read -rp "  Your choice (1/2): " CHOICE
 
 case "$CHOICE" in
-    1) TOOL="claude-code" ;;
-    2) TOOL="cursor" ;;
+    1)
+        TOOL="claude-code"
+        AI_TOOL_NAME="Claude Code"
+        ;;
+    2)
+        TOOL="cursor"
+        AI_TOOL_NAME="Cursor"
+        ;;
     *)
         echo -e "\n  ${RED}Invalid choice.${NC}\n"
         exit 1
@@ -50,21 +57,50 @@ case "$CHOICE" in
 esac
 
 echo ""
-echo -e "  Setting up davai for ${CYAN}${TOOL}${NC}..."
+echo -e "  Setting up davai for ${CYAN}${AI_TOOL_NAME}${NC}..."
 
-# Update config: set active tool (portable sed — works on macOS and Linux)
+# --- Build installed/ from framework/ ---
+
+# Clean previous build
+rm -rf "$INSTALLED_DIR"
+mkdir -p "$INSTALLED_DIR"
+
+# Copy framework files that need variable substitution
+cp -R "$FRAMEWORK_DIR/core" "$INSTALLED_DIR/core"
+cp -R "$FRAMEWORK_DIR/agents" "$INSTALLED_DIR/agents"
+cp -R "$FRAMEWORK_DIR/templates" "$INSTALLED_DIR/templates"
+cp "$FRAMEWORK_DIR/config.yml" "$INSTALLED_DIR/config.yml"
+
+# Symlink skills-library (can be large, no substitution needed)
+ln -s "$FRAMEWORK_DIR/skills-library" "$INSTALLED_DIR/skills-library"
+
+echo -e "  ${GREEN}+${NC} Built installed/ from framework/"
+
+# --- Replace variables ---
+
+# Set active tool in config
 tmp=$(mktemp)
-sed "s/^tool: .*/tool: ${TOOL}/" "$CONFIG_FILE" > "$tmp" && mv "$tmp" "$CONFIG_FILE"
+sed "s/^tool: .*/tool: ${TOOL}/" "$INSTALLED_DIR/config.yml" > "$tmp" && mv "$tmp" "$INSTALLED_DIR/config.yml"
 
-# Clean up previous setup (in project root)
+# Replace {{ai_tool}} in all .md and .yml files
+find "$INSTALLED_DIR" -type f \( -name '*.md' -o -name '*.yml' \) -exec \
+    sed -i.bak "s/{{ai_tool}}/${AI_TOOL_NAME}/g" {} +
+
+# Clean up .bak files (created by sed -i on macOS)
+find "$INSTALLED_DIR" -name '*.bak' -delete
+
+echo -e "  ${GREEN}+${NC} Replaced variables ({{ai_tool}} → ${AI_TOOL_NAME})"
+
+# --- Generate tool-specific instruction file in project root ---
+
+# Clean up previous setup
 rm -f "$ROOT_DIR/CLAUDE.md"
 rm -f "$ROOT_DIR/.cursorrules"
 rm -rf "$ROOT_DIR/.cursor/rules/davai-ceo.mdc"
 
-# Generate instructions for the chosen tool (in project root)
 case "$TOOL" in
     claude-code)
-        cp "$CORE_INSTRUCTIONS" "$ROOT_DIR/CLAUDE.md"
+        cp "$INSTALLED_DIR/core/ceo-instructions.md" "$ROOT_DIR/CLAUDE.md"
         echo -e "  ${GREEN}+${NC} Created CLAUDE.md"
         ;;
 
@@ -77,16 +113,18 @@ description: davai CEO — orchestrator that guides from idea to project
 alwaysApply: true
 ---
 
-$(cat "$CORE_INSTRUCTIONS")
+$(cat "$INSTALLED_DIR/core/ceo-instructions.md")
 MDCEOF
         echo -e "  ${GREEN}+${NC} Created .cursor/rules/davai-ceo.mdc"
         ;;
 esac
 
-# Update .gitignore
+# --- Update .gitignore ---
+
 GITIGNORE="$ROOT_DIR/.gitignore"
 
 declare -a IGNORE_ENTRIES=(
+    "installed/"
     "CLAUDE.md"
     ".cursor/"
     ".cursorrules"
@@ -101,7 +139,7 @@ done
 echo -e "  ${GREEN}+${NC} Updated .gitignore"
 
 echo ""
-echo -e "  ${GREEN}Done!${NC} davai is ready for ${CYAN}${TOOL}${NC}."
+echo -e "  ${GREEN}Done!${NC} davai is ready for ${CYAN}${AI_TOOL_NAME}${NC}."
 echo ""
 
 case "$TOOL" in
