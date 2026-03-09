@@ -65,18 +65,16 @@ echo -e "  Setting up davai for ${CYAN}${AI_TOOL_NAME}${NC}..."
 rm -rf "$INSTALLED_DIR"
 mkdir -p "$INSTALLED_DIR"
 
-# Copy framework files that need variable substitution
-cp -R "$FRAMEWORK_DIR/core" "$INSTALLED_DIR/core"
+# Copy files that CEO reads at runtime (agents, templates, skills, config)
+# Note: core/ is NOT copied — CEO instructions go directly into CLAUDE.md / .mdc
 cp -R "$FRAMEWORK_DIR/agents" "$INSTALLED_DIR/agents"
 cp -R "$FRAMEWORK_DIR/templates" "$INSTALLED_DIR/templates"
+cp -R "$FRAMEWORK_DIR/skills-library" "$INSTALLED_DIR/skills-library"
 cp "$FRAMEWORK_DIR/config.yml" "$INSTALLED_DIR/config.yml"
-
-# Symlink skills-library (can be large, no substitution needed)
-ln -s "$FRAMEWORK_DIR/skills-library" "$INSTALLED_DIR/skills-library"
 
 echo -e "  ${GREEN}+${NC} Built installed/ from framework/"
 
-# --- Replace variables ---
+# --- Replace variables in installed/ ---
 
 # Set active tool in config
 tmp=$(mktemp)
@@ -93,14 +91,17 @@ echo -e "  ${GREEN}+${NC} Replaced variables ({{ai_tool}} → ${AI_TOOL_NAME})"
 
 # --- Generate tool-specific instruction file in project root ---
 
-# Clean up previous setup
+# Build CEO instructions with variable substitution (directly from framework/core/)
+CEO_CONTENT=$(sed "s/{{ai_tool}}/${AI_TOOL_NAME}/g" "$FRAMEWORK_DIR/core/ceo-instructions.md")
+
+# Clean up previous instruction files
 rm -f "$ROOT_DIR/CLAUDE.md"
 rm -f "$ROOT_DIR/.cursorrules"
 rm -rf "$ROOT_DIR/.cursor/rules/davai-ceo.mdc"
 
 case "$TOOL" in
     claude-code)
-        cp "$INSTALLED_DIR/core/ceo-instructions.md" "$ROOT_DIR/CLAUDE.md"
+        echo "$CEO_CONTENT" > "$ROOT_DIR/CLAUDE.md"
         echo -e "  ${GREEN}+${NC} Created CLAUDE.md"
         ;;
 
@@ -113,7 +114,7 @@ description: davai CEO — orchestrator that guides from idea to project
 alwaysApply: true
 ---
 
-$(cat "$INSTALLED_DIR/core/ceo-instructions.md")
+${CEO_CONTENT}
 MDCEOF
         echo -e "  ${GREEN}+${NC} Created .cursor/rules/davai-ceo.mdc"
         ;;
