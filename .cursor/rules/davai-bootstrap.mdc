@@ -5,16 +5,12 @@ alwaysApply: true
 
 # Davai — first launch
 
-This is a bootstrap file. The framework is not yet configured.
+This is a bootstrap file. The framework is not yet configured. Follow these steps EXACTLY:
 
-## What to do
+1. Detect the user's language from their message. Use that language for ALL communication.
 
-1. Greet the user (detect language from their message, use both if unknown):
+2. Say briefly: "Setting up Davai..." (in the user's language)
 
-"Hi! I'm Davai. Setting up the framework..."
+3. Run `bash framework/setup.sh cursor`
 
-2. Run `bash framework/setup.sh cursor` to configure.
-
-3. Read `.cursor/rules/davai-ceo.mdc` (it was just created by setup). Follow those instructions for the rest of this session — starting from the Startup section. Do NOT ask the user to restart.
-
-**Important:** Detect the user's language from their first message and respond in that language.
+4. **CRITICAL — do NOT stop here, do NOT ask the user to restart.** Immediately read `.cursor/rules/davai-ceo.mdc` (it was just created by setup). Then follow those instructions starting from the Startup section. Continue in this same session as if those instructions were loaded from the start.
