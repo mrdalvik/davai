@@ -231,13 +231,6 @@ echo ""
 echo -e "  ${GREEN}Done!${NC} Davai is ready for ${CYAN}${AI_TOOL_NAME}${NC}."
 echo ""
 
-case "$TOOL" in
-    claude-code)
-        echo -e "  Next: run ${BOLD}claude${NC} in this directory to start."
-        ;;
-    cursor)
-        echo -e "  Next: open this folder in ${BOLD}Cursor${NC} to start."
-        ;;
-esac
+echo -e "  Framework files installed. Ready to go."
 
 echo ""

@@ -10,8 +10,6 @@ Otherwise, this is the first launch:
 
 2. Run `bash framework/setup.sh claude-code` to configure.
 
-3. Tell the user:
-
-"Setup complete! Restart the session to load the full framework."
+3. Read `.claude/CLAUDE.md` (it was just created by setup). Follow those instructions for the rest of this session — starting from the Startup section. Do NOT ask the user to restart.
 
 **Important:** Detect the user's language from their first message and respond in that language.

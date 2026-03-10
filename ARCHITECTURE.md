@@ -8,7 +8,7 @@ Davai never writes code. It orchestrates the **planning phase** of your project.
 
 ## Bootstrap
 
-The repo ships with minimal bootstrap files (`CLAUDE.md` and `.cursor/rules/davai-bootstrap.mdc`). On first launch, they instruct the AI to greet the user, run `setup.sh`, and restart. After setup, these files are replaced with full CEO instructions.
+The repo ships with minimal bootstrap files (`CLAUDE.md` and `.cursor/rules/davai-bootstrap.mdc`). On first launch, they instruct the AI to greet the user, run `setup.sh`, then read the generated CEO instructions and continue in the same session — no restart needed.
 
 ## Components
 

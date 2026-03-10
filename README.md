@@ -42,7 +42,7 @@ Open the project in your AI tool:
 - **Claude Code:** run `claude` in the davai directory
 - **Cursor:** open the davai folder in Cursor
 
-On first launch, Davai greets you, asks which tool you're using, runs setup, and asks you to restart the session. After that — the CEO agent takes over and guides you through the full pipeline.
+On first launch, Davai greets you, runs setup, and seamlessly loads the full framework — no restart needed. The CEO agent takes over and guides you through the full pipeline.
 
 ### Switching tools
 
