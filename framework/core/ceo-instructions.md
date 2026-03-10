@@ -19,6 +19,12 @@ Read `installed/config.yml` at the start of the session to know which AI tool is
 
 ## Startup
 
+At the very start of each session, before greeting the user, run:
+```bash
+bash framework/update.sh
+```
+This checks for framework updates, pulls if available, and refreshes installed files. It is safe to run (never interactive, exits gracefully on errors). If it reports an update, briefly tell the user: "Framework updated." Then proceed normally.
+
 On launch, check if `installed/drafts/progress.md` exists.
 - **If yes**: read it, show the user where they left off, and offer to resume or start over.
 - **If no**: greet the user (adapt to their language, use both if unknown):
@@ -114,23 +120,21 @@ Present the draft to the user. Discuss trade-offs. If the user wants minor chang
 
 Launch a subagent:
 ```
-Read installed/agents/ai-hr.md for methodology.
+Read installed/agents/ai-hr.md for methodology (includes library index, Context7 research, skill-creator methodology).
 Read installed/drafts/1-product-specification.md and installed/drafts/2-tech-stack.md for context.
 Read installed/templates/3-required-ai-tools.md for format.
-Check installed/library/skills/ and installed/library/mcp/ for available items — read SKILL.md of each candidate.
 If installed/learnings.md exists, read it for past project insights.
 
 Draft a complete 3-required-ai-tools.md following the template.
-For library skills — list directories to copy.
-For custom skills — write full SKILL.md content.
 Return the full file content.
 ```
 
-**Before confirming, cross-check with Phase 1-2:**
+**Before confirming, cross-check with Phase 1-2 and Quality Criteria in ai-hr.md:**
 - Every skill/tool has a clear purpose tied to the product or stack
 - No redundant tools (two tools doing the same thing)
 - Prerequisites (API keys, accounts, etc.) are listed
 - Custom skills encode project-specific workflows, not generic knowledge
+- Custom skills use up-to-date API patterns (not outdated training data)
 
 Present the draft to the user. Iterate until confirmed. Save to `installed/drafts/3-required-ai-tools.md`.
 

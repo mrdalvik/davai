@@ -73,6 +73,13 @@ if [ ! -f "$FRAMEWORK_DIR/config.yml" ] || [ ! -f "$FRAMEWORK_DIR/core/ceo-instr
     exit 1
 fi
 
+for agent in ai-hr product-designer tech-lead architect security-specialist; do
+    if [ ! -f "$FRAMEWORK_DIR/agents/${agent}.md" ]; then
+        echo -e "\n  ${RED}Missing framework/agents/${agent}.md — framework files are incomplete.${NC}\n"
+        exit 1
+    fi
+done
+
 mkdir -p "$INSTALLED_DIR"
 
 # Remove only generated parts (preserve user data: learnings.md, drafts/, projects/)
@@ -120,6 +127,56 @@ done
 find "$INSTALLED_DIR" -name '*.bak' -delete
 
 echo -e "  ${GREEN}+${NC} Replaced variables ({{ai_tool}} → ${AI_TOOL_NAME})"
+
+# --- Install Context7 MCP server ---
+
+if command -v npx &>/dev/null; then
+    case "$TOOL" in
+        claude-code)
+            if command -v claude &>/dev/null; then
+                claude mcp add --scope project context7 -- npx -y @upstash/context7-mcp >/dev/null 2>&1 \
+                    && echo -e "  ${GREEN}+${NC} Added Context7 MCP (up-to-date library docs)" \
+                    || echo -e "  ${CYAN}!${NC} Could not add Context7 MCP — add manually: claude mcp add context7 -- npx -y @upstash/context7-mcp"
+            else
+                echo -e "  ${CYAN}!${NC} claude CLI not found — add Context7 MCP manually after installing Claude Code"
+            fi
+            ;;
+        cursor)
+            CURSOR_MCP="$ROOT_DIR/.cursor/mcp.json"
+            if [ ! -f "$CURSOR_MCP" ] || ! grep -q '"context7"' "$CURSOR_MCP" 2>/dev/null; then
+                mkdir -p "$ROOT_DIR/.cursor"
+                if [ -f "$CURSOR_MCP" ] && [ -s "$CURSOR_MCP" ]; then
+                    # Add context7 to existing mcpServers
+                    tmp=$(mktemp)
+                    python3 -c "
+import json, sys
+with open('$CURSOR_MCP') as f: data = json.load(f)
+data.setdefault('mcpServers', {})['context7'] = {'command': 'npx', 'args': ['-y', '@upstash/context7-mcp']}
+with open('$tmp', 'w') as f: json.dump(data, f, indent=2)
+" 2>/dev/null && mv "$tmp" "$CURSOR_MCP" \
+                        && echo -e "  ${GREEN}+${NC} Added Context7 MCP to .cursor/mcp.json" \
+                        || echo -e "  ${CYAN}!${NC} Could not update .cursor/mcp.json — add Context7 MCP manually"
+                else
+                    cat > "$CURSOR_MCP" <<'MCPEOF'
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    }
+  }
+}
+MCPEOF
+                    echo -e "  ${GREEN}+${NC} Created .cursor/mcp.json with Context7 MCP"
+                fi
+            else
+                echo -e "  ${GREEN}✓${NC} Context7 MCP already configured"
+            fi
+            ;;
+    esac
+else
+    echo -e "  ${CYAN}!${NC} npx not found — skipping Context7 MCP (install Node.js to enable)"
+fi
 
 # --- Generate tool-specific instruction file in project root ---
 
