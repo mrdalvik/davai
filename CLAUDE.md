@@ -1,8 +1,8 @@
-# Davai — first launch
+# Davai
 
-This is a bootstrap file. The framework is not yet configured.
+If `installed/config.yml` exists and has a `tool:` value other than `null` — the framework is configured. Read and follow `.claude/CLAUDE.md` for full instructions.
 
-## What to do
+Otherwise, this is the first launch:
 
 1. Greet the user (detect language from their message, use both if unknown):
 

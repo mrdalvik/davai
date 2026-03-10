@@ -87,7 +87,8 @@ CEO_CONTENT=$(sed "s/{{ai_tool}}/${AI_TOOL_NAME}/g" "$FRAMEWORK_DIR/core/ceo-ins
 
 case "$TOOL" in
     claude-code)
-        echo "$CEO_CONTENT" > "$ROOT_DIR/CLAUDE.md"
+        mkdir -p "$ROOT_DIR/.claude"
+        echo "$CEO_CONTENT" > "$ROOT_DIR/.claude/CLAUDE.md"
         ;;
     cursor)
         mkdir -p "$ROOT_DIR/.cursor/rules"

@@ -198,25 +198,22 @@ else
     echo -e "  ${CYAN}!${NC} npx not found — skipping Context7 MCP (install Node.js to enable)"
 fi
 
-# --- Generate tool-specific instruction file in project root ---
+# --- Generate tool-specific instruction file ---
 
 # Build CEO instructions with variable substitution (directly from framework/core/)
 CEO_CONTENT=$(sed "s/{{ai_tool}}/${AI_TOOL_NAME}/g" "$FRAMEWORK_DIR/core/ceo-instructions.md")
 
-# Clean up bootstrap and previous instruction files
-rm -f "$ROOT_DIR/CLAUDE.md"
-rm -f "$ROOT_DIR/.cursorrules"
-rm -rf "$ROOT_DIR/.cursor/rules/davai-bootstrap.mdc"
-rm -rf "$ROOT_DIR/.cursor/rules/davai-ceo.mdc"
-
 case "$TOOL" in
     claude-code)
-        echo "$CEO_CONTENT" > "$ROOT_DIR/CLAUDE.md"
-        echo -e "  ${GREEN}+${NC} Created CLAUDE.md"
+        mkdir -p "$ROOT_DIR/.claude"
+        echo "$CEO_CONTENT" > "$ROOT_DIR/.claude/CLAUDE.md"
+        echo -e "  ${GREEN}+${NC} Created .claude/CLAUDE.md"
         ;;
 
     cursor)
         mkdir -p "$ROOT_DIR/.cursor/rules"
+        # Remove bootstrap file (replaced by CEO instructions)
+        rm -f "$ROOT_DIR/.cursor/rules/davai-bootstrap.mdc"
 
         cat > "$ROOT_DIR/.cursor/rules/davai-ceo.mdc" <<MDCEOF
 ---
@@ -229,25 +226,6 @@ MDCEOF
         echo -e "  ${GREEN}+${NC} Created .cursor/rules/davai-ceo.mdc"
         ;;
 esac
-
-# --- Update .gitignore ---
-
-GITIGNORE="$ROOT_DIR/.gitignore"
-
-declare -a IGNORE_ENTRIES=(
-    "installed/"
-    "CLAUDE.md"
-    ".cursor/"
-    ".cursorrules"
-)
-
-for entry in "${IGNORE_ENTRIES[@]}"; do
-    if ! grep -qxF "$entry" "$GITIGNORE" 2>/dev/null; then
-        echo "$entry" >> "$GITIGNORE"
-    fi
-done
-
-echo -e "  ${GREEN}+${NC} Updated .gitignore"
 
 echo ""
 echo -e "  ${GREEN}Done!${NC} Davai is ready for ${CYAN}${AI_TOOL_NAME}${NC}."
