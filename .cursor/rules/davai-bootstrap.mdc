@@ -11,17 +11,11 @@ This is a bootstrap file. The framework is not yet configured.
 
 1. Greet the user (detect language from their message, use both if unknown):
 
-"Hi! I'm Davai. Before we start, let's set up the framework."
+"Hi! I'm Davai. Setting up the framework..."
 
-2. Ask which AI tool they're using:
+2. Run `bash framework/setup.sh cursor` to configure.
 
-"Which AI tool are you using?
-1) Claude Code
-2) Cursor"
-
-3. Run `framework/setup.sh` with the user's choice — pass `1` or `2` as stdin input.
-
-4. Tell the user:
+3. Tell the user:
 
 "Setup complete! Restart the session to load the full framework."
 

@@ -18,43 +18,63 @@ echo -e "${BOLD}  Davai${NC} — from idea to project"
 echo -e "  ──────────────────────────────"
 echo ""
 
-# Check if already configured
-if [ -f "$INSTALLED_DIR/config.yml" ]; then
-    CURRENT_TOOL=$(grep '^tool:' "$INSTALLED_DIR/config.yml" 2>/dev/null | sed 's/tool: *//' || echo "null")
-    if [ "$CURRENT_TOOL" != "null" ] && [ -n "$CURRENT_TOOL" ]; then
-        echo -e "  Currently configured for: ${CYAN}${CURRENT_TOOL}${NC}"
-        echo ""
-        read -rp "  Reconfigure? (y/N): " RECONFIGURE
-        if [[ ! "$RECONFIGURE" =~ ^[Yy]$ ]]; then
-            echo -e "\n  ${GREEN}Nothing changed.${NC}\n"
-            exit 0
+# Accept tool as argument: setup.sh claude-code | setup.sh cursor
+ARG_TOOL="${1:-}"
+
+if [ -n "$ARG_TOOL" ]; then
+    # Non-interactive: tool passed as argument
+    case "$ARG_TOOL" in
+        claude-code)
+            TOOL="claude-code"
+            AI_TOOL_NAME="Claude Code"
+            ;;
+        cursor)
+            TOOL="cursor"
+            AI_TOOL_NAME="Cursor"
+            ;;
+        *)
+            echo -e "\n  ${RED}Unknown tool: ${ARG_TOOL}. Use 'claude-code' or 'cursor'.${NC}\n"
+            exit 1
+            ;;
+    esac
+else
+    # Interactive: ask user
+    if [ -f "$INSTALLED_DIR/config.yml" ]; then
+        CURRENT_TOOL=$(grep '^tool:' "$INSTALLED_DIR/config.yml" 2>/dev/null | sed 's/tool: *//' || echo "null")
+        if [ "$CURRENT_TOOL" != "null" ] && [ -n "$CURRENT_TOOL" ]; then
+            echo -e "  Currently configured for: ${CYAN}${CURRENT_TOOL}${NC}"
+            echo ""
+            read -rp "  Reconfigure? (y/N): " RECONFIGURE
+            if [[ ! "$RECONFIGURE" =~ ^[Yy]$ ]]; then
+                echo -e "\n  ${GREEN}Nothing changed.${NC}\n"
+                exit 0
+            fi
+            echo ""
         fi
-        echo ""
     fi
+
+    echo -e "  Which AI tool will you use with Davai?"
+    echo ""
+    echo -e "    ${BOLD}1)${NC} Claude Code"
+    echo -e "    ${BOLD}2)${NC} Cursor"
+    echo ""
+    read -rp "  Your choice (1/2): " CHOICE
+
+    case "$CHOICE" in
+        1)
+            TOOL="claude-code"
+            AI_TOOL_NAME="Claude Code"
+            ;;
+        2)
+            TOOL="cursor"
+            AI_TOOL_NAME="Cursor"
+            ;;
+        *)
+            echo -e "\n  ${RED}Invalid choice.${NC}\n"
+            exit 1
+            ;;
+    esac
 fi
-
-# Choose tool
-echo -e "  Which AI tool will you use with Davai?"
-echo ""
-echo -e "    ${BOLD}1)${NC} Claude Code"
-echo -e "    ${BOLD}2)${NC} Cursor"
-echo ""
-read -rp "  Your choice (1/2): " CHOICE
-
-case "$CHOICE" in
-    1)
-        TOOL="claude-code"
-        AI_TOOL_NAME="Claude Code"
-        ;;
-    2)
-        TOOL="cursor"
-        AI_TOOL_NAME="Cursor"
-        ;;
-    *)
-        echo -e "\n  ${RED}Invalid choice.${NC}\n"
-        exit 1
-        ;;
-esac
 
 echo ""
 echo -e "  Setting up Davai for ${CYAN}${AI_TOOL_NAME}${NC}..."
