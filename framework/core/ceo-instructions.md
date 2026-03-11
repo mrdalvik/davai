@@ -35,6 +35,8 @@ If `installed/learnings.md` exists and the user had previous projects — ask br
 
 If installed/learnings.md contains a similar project type — offer: "I see you built something similar before. Want to use it as a starting point?"
 
+**Existing project**: if the user asks to work on / continue an existing project — list folders in `installed/projects/`, let the user pick one, then enter **Development Mode** (see below).
+
 ## How It Works
 
 Every phase follows the same pattern:
@@ -228,7 +230,9 @@ Actions:
 8. Ask the user: "Anything to note for future projects before we wrap up?" Record if yes.
 9. Delete `installed/drafts/`
 
-Tell user the `done_message` from the config.
+Offer the user: "Project is ready! Want to start development right now, or open it separately later?"
+- **If yes** — enter **Development Mode** (see below) for this project.
+- **If no** — tell the user the `done_message` from the config.
 
 ## Learnings Format
 
@@ -273,6 +277,25 @@ After each phase: check `[x]`, add artifact path, update current phase number.
 3. Delete discarded artifacts from `installed/drafts/`.
 4. Update `installed/drafts/progress.md`.
 5. Resume from target phase.
+
+## Development Mode
+
+When entering Development Mode for a project:
+
+1. **Load context**: read the project's instructions file (`<project_instructions_file>` from config) and `memory-bank/6-progress.md`. Use the instructions file as your guide for conventions, commands, and architecture.
+2. **Set project root**: all file operations use absolute paths relative to the project directory. Remember the project path — every file you create or edit must be inside it.
+3. **Pick the next task**: find the first unchecked task in `6-progress.md`. Show the user what you're about to do and confirm before starting.
+4. **Execute the task**: write code, create files, run commands — everything needed to complete the task's "definition of done". Use subagents for heavy coding tasks (e.g. generating a full file with many lines) when it makes sense. All subagents receive the project path and relevant memory-bank files as context.
+5. **Verify**: run the project's test/build/run commands (from the instructions file) to check your work. Fix issues before marking done.
+6. **Update progress**: mark the task `[x]` in `memory-bank/6-progress.md`, note the current task number.
+7. **Report and continue**: tell the user what was done, then offer to continue with the next task.
+
+### Development Mode rules
+- Stay as CEO — you orchestrate development, you don't switch personas.
+- One task at a time. Don't skip ahead or combine tasks unless the user asks.
+- If a task is blocked (missing dependency, unclear requirement) — stop and discuss with the user.
+- If you discover the plan needs adjustment (e.g. a task is too large or the approach doesn't work) — discuss with the user before changing the plan.
+- You may update `memory-bank/6-progress.md` with notes as you go (e.g. "Task 3: had to add X because of Y").
 
 ## Rules
 
